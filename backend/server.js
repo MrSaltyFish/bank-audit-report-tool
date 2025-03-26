@@ -4,19 +4,13 @@ const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const path = require('path');
 const { PDFDocument } = require('pdf-lib');
+// const cors = require("cors");
+
 const app = express();
 const PORT = 3000;
 
+// app.use(cors()); // <-- Allow frontend to access backend
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/trialdb', { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('MongoDB Connected...'))
-    .catch(err => console.error('MongoDB connection error:', err));
-
-// Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(express.static('public'));
 
 // Define Mongoose Schemas and Models
 const bankSchema = new mongoose.Schema({
@@ -55,6 +49,17 @@ const Observations = mongoose.model('Observations', observationsSchema);
 const User = mongoose.model('User', userSchema);
 
 
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/trialdb', { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB Connected...'))
+    .catch(err => console.error('MongoDB connection error:', err));
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(express.static('public'));
+
 // Home Route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'home.html'));
@@ -75,6 +80,9 @@ app.post('/signup', async (req, res) => {
     const { username, email, password } = req.body;
     const saltRounds = 10;
 
+    console.log(`Request received on /signup\nusername: ${username}\temail: ${email}\tpassword: ${password}`);
+
+
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -94,6 +102,7 @@ app.post('/signup', async (req, res) => {
 // Login Route
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
+    console.log("Request received on /login");
 
     try {
         const user = await User.findOne({ email });
