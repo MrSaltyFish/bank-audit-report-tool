@@ -1,0 +1,22 @@
+{
+  "name": "bart-asper-gpt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^4.21.2",
+    "mongoose": "^8.13.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^3.1.9",
+    "path": "^0.12.7",
+    "pdf-lib": "^1.17.1"
+  },
+  "description": ""
+}
