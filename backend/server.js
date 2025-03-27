@@ -138,6 +138,7 @@ app.post('/login', async (req, res) => {
 
 // Add Bank and Branch Route
 app.post('/add-bank', async (req, res) => {
+    console.log("Request on /add-bank");
     const { bankName, branchName, branchLocation } = req.body;
 
     if (!bankName || !branchName || !branchLocation) {
@@ -147,7 +148,8 @@ app.post('/add-bank', async (req, res) => {
     try {
         const newBank = new Bank({ bankName, branchName, branchLocation });
         await newBank.save();
-        res.json({ success: true, message: 'Bank and Branch added successfully' });
+        // res.json({ success: true, message: 'Bank and Branch added successfully' });
+        res.status(201).json({ message: 'Bank and Branch added successfully' });
     } catch (err) {
         console.error('Error adding bank or branch:', err);
         return res.status(500).send('Failed to add bank/branch');

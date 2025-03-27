@@ -5,7 +5,7 @@
 //     const email = document.getElementById('email').value;
 //     const password = document.getElementById('password').value;
 
-//     fetch('/login', {
+//     fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
 //     method: 'POST',
 //     headers: {
 //         'Content-Type': 'application/x-www-form-urlencoded',

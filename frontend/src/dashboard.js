@@ -4,7 +4,7 @@ document.getElementById('bankForm').addEventListener('submit', function(e) {
     const branchName = document.getElementById('branchName').value;
     const branchLocation = document.getElementById('branchLocation').value;
 
-    fetch('/add-bank', {
+    fetch(`${import.meta.env.VITE_SERVER_URL}/add-bank`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ bankName, branchName, branchLocation })
@@ -21,7 +21,7 @@ document.getElementById('bankForm').addEventListener('submit', function(e) {
 });
 
 function fetchBanks() {
-    fetch('/get-banks')
+    fetch(`${import.meta.env.VITE_SERVER_URL}/get-banks`)
         .then(response => response.json())
         .then(data => {
             const bankListDiv = document.getElementById('bankList');
@@ -56,7 +56,7 @@ function fetchBanks() {
 }
 
 function deleteBank(bankId) {
-    fetch(`/delete-bank/${bankId}`, {
+    fetch(`${import.meta.env.VITE_SERVER_URL}/delete-bank/${bankId}`, {
         method: 'DELETE'
     })
     .then(response => {
