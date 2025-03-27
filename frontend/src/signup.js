@@ -6,7 +6,7 @@
 //     const password = document.getElementById('password').value;
 
 //     try {
-//         const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/signup`, {
+//         const response = await fetch(`${SERVER_URL}/signup`, {
 //             method: 'POST',
 //             headers: { 'Content-Type': 'application/json' },
 //             body: JSON.stringify({ username, email, password }),
@@ -26,6 +26,7 @@
 //     }
 // });
 
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 document.getElementById('signupForm').addEventListener('submit', async (event) => {
     event.preventDefault(); // Prevent default form submission
@@ -38,7 +39,7 @@ document.getElementById('signupForm').addEventListener('submit', async (event) =
     messageContainer.classList.remove('alert', 'alert-success', 'alert-danger'); // Remove previous styles
 
     try {
-        const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/signup`, {
+        const response = await fetch(`${SERVER_URL}/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, email, password }),

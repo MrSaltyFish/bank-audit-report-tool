@@ -5,7 +5,7 @@
 //     const email = document.getElementById('email').value;
 //     const password = document.getElementById('password').value;
 
-//     fetch(`${import.meta.env.VITE_SERVER_URL}/login`, {
+//     fetch(`${SERVER_URL}/login`, {
 //     method: 'POST',
 //     headers: {
 //         'Content-Type': 'application/x-www-form-urlencoded',
@@ -32,7 +32,7 @@
 // });
 
 
-const SERVER_URL = "http://localhost:3000"
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 
 document.addEventListener("DOMContentLoaded", () => {

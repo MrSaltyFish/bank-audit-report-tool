@@ -7,7 +7,7 @@
 
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="bankdetails.css">
+    <link rel="stylesheet" href="../styles/bankDetails.css">
 </head>
 <body>
     <header class="bg-dark text-white text-center py-4">
@@ -28,7 +28,7 @@
                         <a class="nav-link" href="dashboard.html">Bank Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="bankdetails.html">View Bank Data</a>
+                        <a class="nav-link" href="bankDetails.html">View Bank Data</a>
                     </li>
                 </ul>
             </div>
@@ -41,9 +41,9 @@
         <h4>Select a Bank to View Data</h4>
         <div id="bankList"></div>
 
-        <h4 id = "viewdata1"class="mt-5">Bank Data</h4>
-        <h3 id="selectedBankName"></h3>
-        <div id="bankDataContainer"></div>
+        <h4 id = "viewdata1" class="mt-5">Bank Data</h4>
+        <h3 id = "selectedBankName"></h3>
+        <div id = "bankDataContainer"></div>
 
         <div id="reportGenerationSection" style="display: none;">
             <h5>Select Report Format for <span id="reportBankName"></span></h5>
@@ -58,12 +58,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
-    <!-- Custom JS -->
-    <script src="../src/bankDetails.js">
-    </script>
 
     <footer class="text-center mt-5">
         <p class="text-muted">&copy; 2024 Bart. All rights reserved.</p>
     </footer>
+
+    <!-- Custom JS -->
+    <script type="module" src="../src/bankDetails.js"></script>
 </body>
 </html>

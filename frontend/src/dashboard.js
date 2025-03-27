@@ -1,10 +1,12 @@
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 document.getElementById('bankForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const bankName = document.getElementById('bankName').value;
     const branchName = document.getElementById('branchName').value;
     const branchLocation = document.getElementById('branchLocation').value;
 
-    fetch(`${import.meta.env.VITE_SERVER_URL}/add-bank`, {
+    fetch(`${SERVER_URL}/add-bank`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ bankName, branchName, branchLocation })
@@ -21,7 +23,8 @@ document.getElementById('bankForm').addEventListener('submit', function(e) {
 });
 
 function fetchBanks() {
-    fetch(`${import.meta.env.VITE_SERVER_URL}/get-banks`)
+    console.log("inside fetchBanks");
+        fetch(`${SERVER_URL}/get-banks`)
         .then(response => response.json())
         .then(data => {
             const bankListDiv = document.getElementById('bankList');
@@ -30,7 +33,7 @@ function fetchBanks() {
                 bankListDiv.innerHTML += `
                     <div class="card">
                         <div class="card-body">
-                            <a href="/dataDashboard?bankId=${bank._id}" class="text-decoration-none text-dark">
+                                <a href="/public/dataDashboard?bankId=${bank._id}" class="text-decoration-none text-dark">
                                 <h5 class="card-title">${bank.bankName}</h5>
                                 <p class="card-text">Branch: ${bank.branchName}</p>
                                 <p class="card-text">Location: ${bank.branchLocation}</p>
@@ -55,8 +58,29 @@ function fetchBanks() {
         });
 }
 
+// function fetchBanks() {
+//     fetch(`${SERVER_URL}/get-banks`)
+//         .then(response => response.json())
+//         .then(banks => {
+//             const bankListDiv = document.getElementById('bankList');
+//             bankListDiv.innerHTML = banks.map(bank => `
+//                 <div class="card">
+//                     <div class="card-body">
+//                         <h5 class="card-title">${bank.bankName}</h5>
+//                         <p class="card-text">Branch: ${bank.branchName}</p>
+//                         <p class="card-text">Location: ${bank.branchLocation}</p>
+//                         <button class="btn" style="background-color: #007bff; color: white;" onclick="fetchBankData('${bank._id}', '${bank.bankName}')"><a href="#viewdata1" style="color: white; text-decoration: none;">View Data</a></button>
+//                         <button class="btn" style="background-color: #007bff; color: white;" onclick="showReportSection('${bank._id}', '${bank.bankName}')"><a href="#generateReportBtn" style="color: white; text-decoration: none;">Generate Report</a></button>
+
+//                     </div>
+//                 </div>
+//             `).join('');
+//         })
+//         .catch(error => console.error('Error fetching banks:', error));
+// }
+
 function deleteBank(bankId) {
-    fetch(`${import.meta.env.VITE_SERVER_URL}/delete-bank/${bankId}`, {
+    fetch(`${SERVER_URL}/delete-bank/${bankId}`, {
         method: 'DELETE'
     })
     .then(response => {

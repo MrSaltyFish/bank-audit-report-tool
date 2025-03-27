@@ -1,3 +1,5 @@
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
 // Function to get URL parameters
 function getUrlParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -23,7 +25,7 @@ document.getElementById('addDataForm').addEventListener('submit', async (e) => {
     const outstandingBalance = document.getElementById('outstandingBalance').value;
     const otherFacilities = document.getElementById('otherFacilities').value;
 
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/create-entry`, {
+    const response = await fetch(`${SERVER_URL}/create-entry`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -41,7 +43,7 @@ document.getElementById('addQueryForm').addEventListener('submit', async (e) => 
     const query = document.getElementById('query').value;
     const details = document.getElementById('details').value;
 
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/add-query`, {
+    const response = await fetch(`${SERVER_URL}/add-query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ accountNo: accountNoObservation, query, details })
@@ -55,7 +57,7 @@ document.getElementById('getDetailsForm').addEventListener('submit', async (e) =
     e.preventDefault();
     const accountNoToFetch = document.getElementById('accountNoToFetch').value;
 
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/get-details?accountNo=${accountNoToFetch}`, {
+    const response = await fetch(`${SERVER_URL}/get-details?accountNo=${accountNoToFetch}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
     });

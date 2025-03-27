@@ -5,10 +5,10 @@ const mongoose = require('mongoose');
 const path = require('path');
 const { PDFDocument } = require('pdf-lib');
 
-const Bank = require('./models/Bank'); 
-const MasterDatabase = require('./models/MasterDatabase');
-const Observations = require('./models/Observations');
-const User = require('./models/User');
+const Bank = require('./models/Bank.model'); 
+const MasterDatabase = require('./models/MasterDatabase.model');
+const Observations = require('./models/Observations.model');
+const User = require('./models/User.model');
 
 const cors = require("cors");
 
