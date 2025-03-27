@@ -19,45 +19,6 @@ const PORT = 3000;
 
 
 
-// Define Mongoose Schemas and Models
-
-// const bankSchema = new mongoose.Schema({
-//     bankName: { type: String, required: true },
-//     branchName: { type: String, required: true },
-//     branchLocation: { type: String, required: true }
-// });
-
-// const masterDatabaseSchema = new mongoose.Schema({
-//     bank: { type: mongoose.Schema.Types.ObjectId, ref: 'Bank', required: true },
-//     accountNo: { type: String, unique: true, required: true },
-//     nameOfBorrower: { type: String },
-//     dateOfSanctionRenewal: { type: Date },
-//     sanctionedAmount: { type: Number },
-//     outstandingBalance: { type: Number },
-//     otherFacilities: { type: String }
-// });
-
-// const observationsSchema = new mongoose.Schema({
-//     accountNo: { type: String, required: true },
-//     query: { type: String },
-//     details: { type: String },
-//     masterDatabase: { type: mongoose.Schema.Types.ObjectId, ref: 'MasterDatabase' }
-// });
-
-// const userSchema = new mongoose.Schema({
-//     username: { type: String, required: true },
-//     email: { type: String, required: true, unique: true },
-//     password: { type: String, required: true }
-// });
-
-// Create Models
-// const Bank = mongoose.model('Bank', bankSchema);
-// const MasterDatabase = mongoose.model('MasterDatabase', masterDatabaseSchema);
-// const Observations = mongoose.model('Observations', observationsSchema);
-// const User = mongoose.model('User', userSchema);
-
-
-
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/trialdb', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB Connected...'))
@@ -68,22 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// // Home Route
-// app.get('/', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'home.html'));
-// });
-
-// // Dashboard Route
-// app.get('/dashboard', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
-// });
-
-// // Data Dashboard Route for a specific bank
-// app.get('/dataDashboard', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'dataDashboard.html'));
-// });
-
-// // Home Route
+// Home Route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'backend-home.html'));
 });
