@@ -4,8 +4,19 @@ const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const path = require('path');
 const { PDFDocument } = require('pdf-lib');
+
+const Bank = require('./models/Bank.model'); 
+const MasterDatabase = require('./models/MasterDatabase.model');
+const Observations = require('./models/Observations.model');
+const User = require('./models/User.model');
+
+const cors = require("cors");
+
 const app = express();
+app.use(cors()); // <-- Allow frontend to access backend
+
 const PORT = 3000;
+
 
 
 // Connect to MongoDB
@@ -18,94 +29,52 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// Define Mongoose Schemas and Models
-const bankSchema = new mongoose.Schema({
-    bankName: { type: String, required: true },
-    branchName: { type: String, required: true },
-    branchLocation: { type: String, required: true }
-});
-
-const masterDatabaseSchema = new mongoose.Schema({
-    bank: { type: mongoose.Schema.Types.ObjectId, ref: 'Bank', required: true },
-    accountNo: { type: String, unique: true, required: true },
-    nameOfBorrower: { type: String },
-    dateOfSanctionRenewal: { type: Date },
-    sanctionedAmount: { type: Number },
-    outstandingBalance: { type: Number },
-    otherFacilities: { type: String }
-});
-
-const observationsSchema = new mongoose.Schema({
-    accountNo: { type: String, required: true },
-    query: { type: String },
-    details: { type: String },
-    masterDatabase: { type: mongoose.Schema.Types.ObjectId, ref: 'MasterDatabase' }
-});
-
-const userSchema = new mongoose.Schema({
-    username: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
-});
-
-// Create Models
-const Bank = mongoose.model('Bank', bankSchema);
-const MasterDatabase = mongoose.model('MasterDatabase', masterDatabaseSchema);
-const Observations = mongoose.model('Observations', observationsSchema);
-const User = mongoose.model('User', userSchema);
-
-
 // Home Route
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'home.html'));
+    res.sendFile(path.join(__dirname, 'public', 'backend-home.html'));
 });
 
-// Dashboard Route
-app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
-});
-
-// Data Dashboard Route for a specific bank
-app.get('/dataDashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'dataDashboard.html'));
-});
 
 // Signup Route
 app.post('/signup', async (req, res) => {
     const { username, email, password } = req.body;
     const saltRounds = 10;
 
+    console.log(`Request received on /signup\nusername: ${username}\temail: ${email}\tpassword: ${password}`);
+
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(409).send('Account already registered with this email');
+            return res.status(409).json({ message: 'Account already registered with this email' });
         }
 
         const hash = await bcrypt.hash(password, saltRounds);
         const newUser = new User({ username, email, password: hash });
         await newUser.save();
-        res.status(201).send('User registered successfully');
+        res.status(201).json({ message: 'User registered successfully' });
     } catch (err) {
         console.error('Error during signup:', err);
-        res.status(500).send('Internal Server Error');
+        res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
 
 // Login Route
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
+    console.log("Request received on /login");
 
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
+            return res.status(404).json({ success: false, message: 'Username or password is incorrect.' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (isMatch) {
             return res.json({ success: true, message: 'Login successful' });
         } else {
-            return res.status(401).json({ success: false, message: 'Incorrect password' });
+            return res.status(401).json({ success: false, message: 'Username or password is incorrect.' });
         }
     } catch (err) {
         console.error('Error during login:', err);
@@ -115,6 +84,7 @@ app.post('/login', async (req, res) => {
 
 // Add Bank and Branch Route
 app.post('/add-bank', async (req, res) => {
+    console.log("Request on /add-bank");
     const { bankName, branchName, branchLocation } = req.body;
 
     if (!bankName || !branchName || !branchLocation) {
@@ -124,7 +94,8 @@ app.post('/add-bank', async (req, res) => {
     try {
         const newBank = new Bank({ bankName, branchName, branchLocation });
         await newBank.save();
-        res.json({ success: true, message: 'Bank and Branch added successfully' });
+        // res.json({ success: true, message: 'Bank and Branch added successfully' });
+        res.status(201).json({ message: 'Bank and Branch added successfully' });
     } catch (err) {
         console.error('Error adding bank or branch:', err);
         return res.status(500).send('Failed to add bank/branch');
