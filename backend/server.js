@@ -316,3 +316,7 @@ app.get('/generate-report', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+
+app.get('/test', async (req, res) => { 
+    return res.json({ success: true, message: 'Test Route successful' });
+});
