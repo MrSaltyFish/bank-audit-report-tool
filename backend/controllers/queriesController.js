@@ -1,6 +1,7 @@
 const Observations = require("../models/Observations.model");
+const MasterDatabase = require("../models/MasterDatabase.model");
 
-addQuery = async (req, res) => {
+const addQuery = async (req, res) => {
   const { accountNo, query, details, masterDatabase } = req.body;
 
   try {
@@ -18,7 +19,7 @@ addQuery = async (req, res) => {
   }
 };
 
-reportsQuery = async (req, res) => {
+const reportsQuery = async (req, res) => {
   const { bankID } = req.query;
   try {
     const results = await MasterDatabase.find({ bank: bankID }).populate(

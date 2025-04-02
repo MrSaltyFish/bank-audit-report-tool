@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // }
 
 function fetchBanks() {
-  fetch(`${SERVER_URL}/get-banks`)
+  fetch(`${SERVER_URL}/bank/get-banks`)
     .then((response) => response.json())
     .then((banks) => {
       const bankListDiv = document.getElementById("bankList");
@@ -118,7 +118,7 @@ function fetchBanks() {
 }
 
 function fetchBankData(bankId, bankName) {
-  fetch(`${SERVER_URL}/getall-details?bankId=${bankId}`)
+  fetch(`${SERVER_URL}/master/getall-details?bankId=${bankId}`)
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -155,7 +155,9 @@ function showReportSection(bankId, bankName) {
 function generateReport(bankId, bankName) {
   const reportFormat = document.getElementById("reportFormat").value;
 
-  fetch(`${SERVER_URL}/generate-report?bankId=${bankId}&format=${reportFormat}`)
+  fetch(
+    `${SERVER_URL}/report/generate-report?bankId=${bankId}&format=${reportFormat}`
+  )
     .then((response) => {
       if (!response.ok) {
         throw new Error("Failed to generate report");

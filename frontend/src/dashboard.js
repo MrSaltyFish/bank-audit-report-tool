@@ -6,7 +6,7 @@ document.getElementById("bankForm").addEventListener("submit", function (e) {
   const branchName = document.getElementById("branchName").value;
   const branchLocation = document.getElementById("branchLocation").value;
 
-  fetch(`${SERVER_URL}/add-bank`, {
+  fetch(`${SERVER_URL}/bank/add-bank`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ bankName, branchName, branchLocation }),
@@ -24,7 +24,7 @@ document.getElementById("bankForm").addEventListener("submit", function (e) {
 
 function fetchBanks() {
   console.log("inside fetchBanks");
-  fetch(`${SERVER_URL}/get-banks`)
+  fetch(`${SERVER_URL}/bank/get-banks`)
     .then((response) => response.json())
     .then((data) => {
       const bankListDiv = document.getElementById("bankList");
@@ -59,7 +59,7 @@ function fetchBanks() {
 }
 
 function deleteBank(bankId) {
-  fetch(`${SERVER_URL}/delete-bank/${bankId}`, {
+  fetch(`${SERVER_URL}/bank/delete-bank/${bankId}`, {
     method: "DELETE",
   })
     .then((response) => {

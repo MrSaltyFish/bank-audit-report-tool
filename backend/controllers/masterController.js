@@ -1,4 +1,5 @@
 const MasterDatabase = require("../models/MasterDatabase.model");
+const Observations = require("../models/Observations.model");
 
 const createEntry = async (req, res) => {
   const {
@@ -33,7 +34,7 @@ const createEntry = async (req, res) => {
       otherFacilities,
     });
     await newEntry.save();
-    res.send("Entry created successfully");
+    res.json({ message: "Entry created successfully" });
   } catch (err) {
     console.error("Error creating entry in MasterDatabase:", err);
     res.status(500).send("Failed to create entry");

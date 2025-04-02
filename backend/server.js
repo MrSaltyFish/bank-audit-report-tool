@@ -3,23 +3,16 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
-const mongoose = require("mongoose");
 const path = require("path");
-const { PDFDocument } = require("pdf-lib");
 const helmet = require("helmet");
 
 const connectDB = require("./config/db");
-
-// Database Models
-// const Bank = require("./models/Bank.model");
-// const MasterDatabase = require("./models/MasterDatabase.model");
-// const Observations = require("./models/Observations.model");
-// const User = require("./models/User.model");
 
 const authRoutes = require("./routes/authRoutes");
 const bankRoutes = require("./routes/bankRoutes");
 const masterRoutes = require("./routes/masterRoutes");
 const queriesRoutes = require("./routes/queriesRoutes");
+const reportRoutes = require("./routes/reportRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -43,7 +36,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRoutes);
 app.use("/bank", bankRoutes);
 app.use("/master", masterRoutes);
-app.use("/queries", queriesRoutes);
+app.use("/query", queriesRoutes);
 app.use("/report", reportRoutes);
 
 // Start the server

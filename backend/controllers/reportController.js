@@ -1,4 +1,7 @@
-async function generateReport(bankId, format) {
+const { PDFDocument } = require("pdf-lib");
+const Bank = require("../models/Bank.model");
+
+async function pdf_generateReport(bankId, format) {
   const bankData = await Bank.findById(bankId);
   if (!bankData) {
     throw new Error("Bank not found");
@@ -65,11 +68,11 @@ async function generateReport(bankId, format) {
   return reportBuffer;
 }
 
-generateReport = async (req, res) => {
+const generateReport = async (req, res) => {
   const { bankId, format } = req.query;
 
   try {
-    const reportBuffer = await generateReport(bankId, format);
+    const reportBuffer = await pdf_generateReport(bankId, format);
 
     if (format === "pdf") {
       res.setHeader("Content-Type", "application/pdf");
