@@ -6,15 +6,16 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("submit", function (event) {
       event.preventDefault();
 
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
 
       fetch(`${SERVER_URL}/auth/login`, {
         method: "POST",
+        credentials: "include", // 🔹 Sends cookies (if applicable)
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
-        body: new URLSearchParams({ email, password }).toString(),
+        body: JSON.stringify({ email, password }),
       })
         .then((response) => {
           if (!response.ok) {
@@ -25,8 +26,12 @@ document.addEventListener("DOMContentLoaded", () => {
           return response.json();
         })
         .then((data) => {
-          if (data.success) {
+          if (data.success && data.token) {
+            localStorage.setItem("jwtToken", data.token); // 🔹 Store JWT token
+            localStorage.setItem("isAuthenticated", "true"); // Save auth state
             window.location.href = "dashboard.html"; // Redirect on success
+          } else {
+            throw new Error("Invalid response from server");
           }
         })
         .catch((error) => {

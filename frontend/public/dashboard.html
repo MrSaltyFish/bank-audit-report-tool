@@ -1,69 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bart - Dashboard</title>
 
     <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-</head>
-<body>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <header class="bg-dark text-white text-center py-4">
-        <h1>Bank Dashboard</h1>
+      <h1>Bank Dashboard</h1>
     </header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">Dashboard</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="dataDashboard.html">Bank Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="bankDetails.html">View Bank Data</a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="#">Dashboard</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="dashboard.html">Bank Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="bankDetails.html">View Bank Data</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <div class="container">
-        <div class="form-container">
-            <h4>Add Bank</h4>
-            <form id="bankForm">
-                <div class="mb-3">
-                    <label for="bankName" class="form-label">Bank Name</label>
-                    <input type="text" class="form-control" id="bankName" required>
-                </div>
-                <div class="mb-3">
-                    <label for="branchName" class="form-label">Branch Name</label>
-                    <input type="text" class="form-control" id="branchName" required>
-                </div>
-                <div class="mb-3">
-                    <label for="branchLocation" class="form-label">Branch Location</label>
-                    <input type="text" class="form-control" id="branchLocation" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Add Bank</button>
-            </form>
-            <div id="bankMessage"></div>
-        </div>
-        
-    <div class="card-columns" id="bankList"></div>
-</div>
+      <div class="form-container">
+        <h4>Add Bank</h4>
+        <form id="bankForm">
+          <div class="mb-3">
+            <label for="bankName" class="form-label">Bank Name</label>
+            <input type="text" class="form-control" id="bankName" required />
+          </div>
+          <div class="mb-3">
+            <label for="branchName" class="form-label">Branch Name</label>
+            <input type="text" class="form-control" id="branchName" required />
+          </div>
+          <div class="mb-3">
+            <label for="branchLocation" class="form-label"
+              >Branch Location</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="branchLocation"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Add Bank</button>
+        </form>
+        <div id="bankMessage"></div>
+      </div>
+
+      <div class="card-columns" id="bankList"></div>
+    </div>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-    
+
     <!-- Custom JS -->
     <footer class="text-center mt-5">
-        <p class="text-muted">&copy; 2024 Bart. All rights reserved.</p>
+      <p class="text-muted">&copy; 2024 Bart. All rights reserved.</p>
     </footer>
     <script type="module" src="../src/dashboard.js"></script>
-</body>
+  </body>
 </html>

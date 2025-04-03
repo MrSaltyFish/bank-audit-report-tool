@@ -1,28 +1,26 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 
 const signup = async (req, res) => {
   const { username, email, password } = req.body;
   const saltRounds = 10;
 
-  console.log(
-    `Request received on /signup\nusername: ${username}\temail: ${email}\tpassword: ${password}`
-  );
+  console.log(`Request received on /signup: ${username}, ${email}`);
 
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res
-        .status(409)
-        .json({ message: "Account already registered with this email" });
+      return res.status(409).json({ message: "Account already exists" });
     }
 
     const hash = await bcrypt.hash(password, saltRounds);
     const newUser = new User({ username, email, password: hash });
     await newUser.save();
+
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
-    console.error("Error during signup:", err);
+    console.error("Signup Error:", err);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -34,27 +32,43 @@ const login = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "Username or password is incorrect.",
-      });
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (isMatch) {
-      return res.json({ success: true, message: "Login successful" });
-    } else {
-      return res.status(401).json({
-        success: false,
-        message: "Username or password is incorrect.",
-      });
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
+
+    // 🔹 Generate JWT Token
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    // 🔹 Store token in HTTP-Only Cookie (More Secure)
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 3600000, // 1 hour
+    });
+
+    res.json({ success: true, message: "Login successful", token });
   } catch (err) {
-    console.error("Error during login:", err);
-    return res
-      .status(500)
-      .json({ success: false, message: "Internal Server Error" });
+    console.error("Login Error:", err);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
-module.exports = { signup, login };
+const logout = (req, res) => {
+  res.clearCookie("token");
+  res.json({ success: true, message: "Logged out successfully" });
+};
+
+const checkAuth = (req, res) => {
+  res.json({ success: true, user: req.user });
+};
+
+module.exports = { signup, login, logout, checkAuth };

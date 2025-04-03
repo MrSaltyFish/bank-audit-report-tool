@@ -1,5 +1,7 @@
 const { PDFDocument } = require("pdf-lib");
 const Bank = require("../models/Bank.model");
+const MasterDatabase = require("../models/MasterDatabase.model");
+const Observations = require("../models/Observations.model");
 
 async function pdf_generateReport(bankId, format) {
   const bankData = await Bank.findById(bankId);
@@ -69,20 +71,32 @@ async function pdf_generateReport(bankId, format) {
 }
 
 const generateReport = async (req, res) => {
-  const { bankId, format } = req.query;
+  const { bankId, format } = req.body; // Use req.body instead of req.query
 
   try {
     const reportBuffer = await pdf_generateReport(bankId, format);
 
+    if (!reportBuffer) {
+      return res.status(400).send("Failed to generate report.");
+    }
+
     if (format === "pdf") {
       res.setHeader("Content-Type", "application/pdf");
-      res.setHeader("Content-Disposition", "attachment; filename=report.pdf");
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename=report_${bankId}.pdf`
+      );
     } else if (format === "word") {
       res.setHeader(
         "Content-Type",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       );
-      res.setHeader("Content-Disposition", "attachment; filename=report.docx");
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename=report_${bankId}.docx`
+      );
+    } else {
+      return res.status(400).send("Invalid format. Choose 'pdf' or 'word'.");
     }
 
     res.send(reportBuffer);
