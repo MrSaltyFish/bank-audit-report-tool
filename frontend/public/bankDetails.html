@@ -1,69 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bart - View Bank Data</title>
 
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/bankDetails.css">
-</head>
-<body>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/bankDetails.css" />
+  </head>
+  <body>
     <header class="bg-dark text-white text-center py-4">
-        <h1>View Bank Data</h1>
+      <h1>View Bank Data</h1>
     </header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="#">Dashboard</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#generate-report">Generate Report</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="dashboard.html">Bank Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="bankDetails.html">View Bank Data</a>
-                    </li>
-                </ul>
-            </div>
+      <div class="container">
+        <a class="navbar-brand" href="#">Dashboard</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="dashboard.html">Bank Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="bankDetails.html">View Bank Data</a>
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
     <div class="container">
-        <div class="mt-5" id="generate-report">
-            <h2>Generate Report</h2>
-        </div>
-        <h4>Select a Bank to View Data</h4>
-        <div id="bankList"></div>
+      <h4>Select a Bank to View Data</h4>
+      <div id="bankList"></div>
 
-        <h4 id = "viewdata1" class="mt-5">Bank Data</h4>
-        <h3 id = "selectedBankName"></h3>
-        <div id = "bankDataContainer"></div>
-
-        <div id="reportGenerationSection" style="display: none;">
-            <h5>Select Report Format for <span id="reportBankName"></span></h5>
-            <select id="reportFormat" class="form-select">
-                <option value="word">Word</option>
-            </select>
-            <button class="btn btn-success mt-2" id="generateReportBtn">Generate Report</button>
-        </div>
+      <h4 id="viewdata1" class="mt-5">Bank Data</h4>
+      <h3 id="selectedBankName"></h3>
+      <div id="bankDataContainer"></div>
     </div>
 
-    <!-- Bootstrap JS and dependencies -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
-
     <footer class="text-center mt-5">
-        <p class="text-muted">&copy; 2024 Bart. All rights reserved.</p>
+      <p class="text-muted">&copy; 2024 Bart. All rights reserved.</p>
     </footer>
 
     <!-- Custom JS -->
     <script type="module" src="../src/bankDetails.js"></script>
-</body>
+  </body>
 </html>
