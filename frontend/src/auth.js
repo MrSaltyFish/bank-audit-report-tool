@@ -5,7 +5,7 @@ async function checkAuth() {
 
   if (!jwtToken) {
     console.warn("Token missing — redirecting...");
-    window.location.href = "notAuthenticated.html";
+    window.location.href = "login.html";
     return;
   }
 
@@ -26,7 +26,7 @@ async function checkAuth() {
     console.log("✅ Authenticated:", data);
   } catch (err) {
     console.error("❌ Auth error:", err.message);
-    window.location.href = "notAuthenticated.html";
+    window.location.href = "login.html";
   }
 }
 
