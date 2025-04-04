@@ -12,10 +12,13 @@ const addQuery = async (req, res) => {
       masterDatabase,
     });
     await newQuery.save();
-    res.send("Query added successfully");
+    res.json({message: "Query added successfully" });
   } catch (err) {
     console.error("Error adding query:", err);
-    res.status(500).send("Failed to add query");
+    res.status(500).json({
+      message: "Failed to add query",
+      error: err.message,
+    });
   }
 };
 

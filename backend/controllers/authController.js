@@ -64,11 +64,37 @@ const login = async (req, res) => {
 
 const logout = (req, res) => {
   res.clearCookie("token");
+  localStorage.removeItem("authToken");
   res.json({ success: true, message: "Logged out successfully" });
 };
 
 const checkAuth = (req, res) => {
-  res.json({ success: true, user: req.user });
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized: User not authenticated",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User is authenticated",
+      user: {
+        id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+        role: req.user.role,
+        // Add more fields as needed, but avoid sending sensitive data like password
+      },
+    });
+  } catch (error) {
+    console.error("Error in checkAuth:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error while checking authentication",
+    });
+  }
 };
 
 module.exports = { signup, login, logout, checkAuth };

@@ -1,10 +1,13 @@
-const SERVER_URL = process.env.VITE_SERVER_URL;
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
+import "./auth.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   fetchBanks();
 });
 
 function fetchBanks() {
+  console.log("inside fetchBanks()");
   fetch(`${SERVER_URL}/bank/get-banks`)
     .then((response) => response.json())
     .then((banks) => {

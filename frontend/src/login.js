@@ -11,25 +11,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
       fetch(`${SERVER_URL}/auth/login`, {
         method: "POST",
-        credentials: "include", // 🔹 Sends cookies (if applicable)
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
       })
-        .then((response) => {
+        .then(async (response) => {
+          const data = await response.json();
+
           if (!response.ok) {
-            return response.json().then((data) => {
-              throw new Error(data.message || "Login failed");
-            });
+            throw new Error(data.message || "Login failed");
           }
-          return response.json();
+
+          return data;
         })
         .then((data) => {
+          console.log("Login Success ✅", data);
+
           if (data.success && data.token) {
-            localStorage.setItem("jwtToken", data.token); // 🔹 Store JWT token
-            localStorage.setItem("isAuthenticated", "true"); // Save auth state
-            window.location.href = "dashboard.html"; // Redirect on success
+            localStorage.setItem("jwtToken", data.token);
+            localStorage.setItem("isAuthenticated", "true");
+            window.location.href = "dashboard.html";
           } else {
             throw new Error("Invalid response from server");
           }

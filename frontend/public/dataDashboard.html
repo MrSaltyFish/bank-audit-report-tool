@@ -10,6 +10,8 @@
     />
   </head>
   <body>
+    <script type="module" src="../src/dataDashboard.js"></script>
+
     <header class="bg-dark text-white text-center py-4">
       <h1>Data Dashboard</h1>
     </header>
@@ -53,7 +55,7 @@
     </nav>
     <div class="container">
       <br />
-      <form id="addDataForm" method="post" action="/create-entry">
+      <form id="addDataForm">
         <h2>Create Entry</h2>
         <div class="form-group">
           <label for="bankID">Bank ID</label>
@@ -158,7 +160,5 @@
     <footer class="text-center mt-5">
       <p class="text-muted">&copy; 2024 Bart. All rights reserved.</p>
     </footer>
-
-    <script type="module" src="../src/dataDashboard.js"></script>
   </body>
 </html>

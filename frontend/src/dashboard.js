@@ -1,8 +1,9 @@
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 const jwtToken = localStorage.getItem("jwtToken");
 
+import "./auth.js";
+
 document.addEventListener("DOMContentLoaded", () => {
-  checkAuth();
   fetchBanks();
 
   document
@@ -10,28 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("submit", handleBankFormSubmit);
 });
 
-async function checkAuth() {
-  try {
-    const response = await fetch(`${SERVER_URL}/auth/check-auth`, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${jwtToken}`, // 🔹 Attach token
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Unauthorized access");
-    }
-
-    const data = await response.json();
-    console.log("User is authenticated:", data);
-  } catch (error) {
-    console.error(error.message);
-    window.location.href = "index.html"; // Redirect to login if unauthorized
-  }
-}
 
 async function handleBankFormSubmit(e) {
   e.preventDefault();

@@ -8,7 +8,7 @@ const {
 const router = express.Router();
 
 router.post("/create-entry", createEntry);
-router.get("/get-details", getDetails);
+router.post("/get-details", getDetails);
 router.get("/getall-details", getAllDetails);
 
 module.exports = router;

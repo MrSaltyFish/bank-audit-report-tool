@@ -42,7 +42,8 @@ const createEntry = async (req, res) => {
 };
 
 const getDetails = async (req, res) => {
-  const { accountNo } = req.query;
+  const { accountNo } = req.body;
+  console.log("Received accountNo:", accountNo);
 
   try {
     const observations = await Observations.find({
