@@ -26,6 +26,15 @@ const signup = async (req, res) => {
   }
 };
 
+const testUser = (req, res) => {
+  console.log("Sanitized Body:", req.body);
+  res.status(200).json({
+    success: true,
+    message: "User data received and sanitized",
+    sanitizedData: req.body,
+  });
+};
+
 const login = async (req, res) => {
   const { email, password } = req.body;
   console.log("Request received on /login");
@@ -100,4 +109,4 @@ const checkAuth = (req, res) => {
   }
 };
 
-module.exports = { signup, login, logout, checkAuth };
+module.exports = { signup, login, logout, checkAuth, testUser };
