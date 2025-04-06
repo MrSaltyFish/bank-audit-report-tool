@@ -1,5 +1,6 @@
 const MasterDatabase = require("../models/MasterDatabase.model");
 const Observations = require("../models/Observations.model");
+const logger = require("../utils/logger");
 
 const createEntry = async (req, res) => {
   const {

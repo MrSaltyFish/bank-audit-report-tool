@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
 
-const authMiddleware = (req, res, next) => {
+const verifyJwtToken = (req, res, next) => {
   try {
     const authHeader = req.header("Authorization");
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      logger.warn(`No JWT token provided from IP: ${req.ip}`);
       return res
         .status(401)
         .json({ success: false, message: "Unauthorized: No Token" });
@@ -16,10 +17,11 @@ const authMiddleware = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
+    logger.warn(`Invalid or expired JWT token from IP: ${req.ip}`);
     return res
       .status(401)
       .json({ success: false, message: "Invalid or Expired Token" });
   }
 };
 
-module.exports = authMiddleware;
+module.exports = { verifyJwtToken };

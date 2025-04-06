@@ -162,6 +162,7 @@ document
 async function generateReport(bankId) {
   try {
     const response = await fetch(`${SERVER_URL}/report/generate-report`, {
+      // const response = await fetch(`${SERVER_URL}/report/generate-sample-docx`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ bankId, format: "word" }),

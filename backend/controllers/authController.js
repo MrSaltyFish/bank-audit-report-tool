@@ -69,6 +69,7 @@ const logout = (req, res) => {
 };
 
 const checkAuth = (req, res) => {
+  console.log("req.user:", req.user);
   try {
     if (!req.user) {
       logger.warn(`Unauthenticated request from IP: ${req.ip}`);

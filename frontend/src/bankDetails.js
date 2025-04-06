@@ -22,12 +22,12 @@ function fetchBanks() {
                         <p class="card-text">Location: ${bank.branchLocation}</p>
                         <button class="btn view-data-btn"
                                 style="background-color: #007bff; color: white;"
-                                data-bank-id="${bank._id}" 
+                                data-bank-id="${bank._id}"
                                 data-bank-name="${bank.bankName}">
                             View Data
                         </button>
 
-                        <button class="btn generate-report-btn" 
+                        <button class="btn generate-report-btn"
                                 style="background-color: #28a745; color: white;"
                                 data-bank-id="${bank._id}"
                                 data-bank-name="${bank.bankName}">
@@ -83,6 +83,7 @@ function fetchBankData(bankId, bankName) {
 
 function generateReport(bankId, bankName) {
   fetch(`${SERVER_URL}/report/generate-report`, {
+    // fetch(`${SERVER_URL}/report/generate-sample-docx`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

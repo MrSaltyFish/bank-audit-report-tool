@@ -1,92 +1,112 @@
-const { PDFDocument } = require("pdf-lib");
+const mongoose = require("mongoose");
 const Bank = require("../models/Bank.model");
 const MasterDatabase = require("../models/MasterDatabase.model");
 const Observations = require("../models/Observations.model");
 
-async function pdf_generateReport(bankId, format) {
+const logger = require("../utils/logger");
+
+const { PDFDocument } = require("pdf-lib");
+const fs = require("fs");
+const { Document, Packer, Paragraph, TextRun } = require("docx");
+
+function isValidObjectId(id) {
+  return mongoose.Types.ObjectId.isValid(id);
+}
+
+async function generatePdfReport(bankId) {
   const bankData = await Bank.findById(bankId);
-  if (!bankData) {
-    throw new Error("Bank not found");
-  }
+  if (!bankData) throw new Error("Bank not found");
 
   const masterData = await MasterDatabase.find({ bank: bankId });
   const observationData = await Observations.find({
     accountNo: { $in: masterData.map((entry) => entry.accountNo) },
   });
 
-  let reportBuffer;
+  const pdfDoc = await PDFDocument.create();
+  const page = pdfDoc.addPage();
+  let reportContent = `Report for Bank: ${bankData.bankName}\n`;
 
-  if (format === "pdf") {
-    const pdfDoc = await PDFDocument.create();
-    const page = pdfDoc.addPage();
-    let reportContent = `Report for Bank Name: ${bankData.bankName}\n`;
+  reportContent += `Branch: ${bankData.branchName}, Location: ${bankData.branchLocation}\n\n`;
+  masterData.forEach((entry) => {
+    reportContent += `Account No: ${entry.accountNo}, Borrower: ${entry.nameOfBorrower}, Amount: ${entry.sanctionedAmount}\n`;
+  });
 
-    reportContent += "Bank Details:\n";
-    reportContent += `Bank Name: ${bankData.bankName}\n`;
-    reportContent += "Branches:\n";
-    reportContent += ` - ${bankData.branchName}, Location: ${bankData.branchLocation}\n`;
+  observationData.forEach((obs) => {
+    reportContent += `Observation: ${obs.query}, Details: ${obs.details}\n`;
+  });
 
-    reportContent += "\nMaster Database Entries:\n";
-    masterData.forEach((entry) => {
-      reportContent += ` - Account No: ${entry.accountNo}, Name: ${entry.nameOfBorrower}, Amount: ${entry.sanctionedAmount}\n`;
-    });
+  page.drawText(reportContent, { x: 50, y: page.getHeight() - 50 });
+  return await pdfDoc.save();
+}
+async function generateDocxReport(bankId) {
+  const bankData = await Bank.findById(bankId);
+  if (!bankData) throw new Error("Bank not found");
 
-    reportContent += "\nObservations:\n";
-    observationData.forEach((obs) => {
-      reportContent += ` - Query: ${obs.query}, Details: ${obs.details}\n`;
-    });
+  const masterData = await MasterDatabase.find({ bank: bankId });
+  const observationData = await Observations.find({
+    accountNo: { $in: masterData.map((entry) => entry.accountNo) },
+  });
 
-    page.drawText(reportContent, { x: 50, y: page.getHeight() - 50 });
-    reportBuffer = await pdfDoc.save();
-  } else if (format === "word") {
-    let reportContent = `Report for Bank Name: ${bankData.bankName}\n`;
-    reportContent += "Bank Details:\n";
-    reportContent += `Bank Name: ${bankData.bankName}\n`;
-    reportContent += "Branches:\n";
-    reportContent += ` - ${bankData.branchName}, Location: ${bankData.branchLocation}\n`;
+  const doc = new Document({
+    sections: [
+      {
+        properties: {},
+        children: [
+          new Paragraph({
+            children: [new TextRun(`Report for Bank: ${bankData.bankName}`)],
+          }),
+          new Paragraph({
+            children: [
+              new TextRun(
+                `Branch: ${bankData.branchName}, Location: ${bankData.branchLocation}`
+              ),
+            ],
+          }),
+          new Paragraph({ text: "" }),
+          ...masterData.map(
+            (entry) =>
+              new Paragraph({
+                children: [
+                  new TextRun(
+                    `Account No: ${entry.accountNo}, Name: ${entry.nameOfBorrower}, Amount: ${entry.sanctionedAmount}`
+                  ),
+                ],
+              })
+          ),
+          new Paragraph({ text: "Observations:", bold: true }),
+          ...observationData.map(
+            (obs) =>
+              new Paragraph({
+                children: [new TextRun(`- ${obs.query}: ${obs.details}`)],
+              })
+          ),
+        ],
+      },
+    ],
+  });
 
-    reportContent += "\nMaster Database Entries:\n";
-    masterData.forEach((entry) => {
-      reportContent += ` - Account No: ${entry.accountNo}, Name: ${entry.nameOfBorrower}, Amount: ${entry.sanctionedAmount}\n`;
-
-      // Find observations related to the current master database entry
-      const relatedObservations = observationData.filter(
-        (obs) => obs.accountNo === entry.accountNo
-      );
-
-      if (relatedObservations.length > 0) {
-        reportContent += "   Observations:\n"; // Indent for better visibility
-        relatedObservations.forEach((obs) => {
-          reportContent += `     - Query: ${obs.query}, Details: ${obs.details}\n`;
-        });
-      } else {
-        reportContent += "   No observations found.\n"; // Handle case with no observations
-      }
-    });
-
-    reportBuffer = Buffer.from(reportContent, "utf-8");
-  }
-
-  return reportBuffer;
+  return await Packer.toBuffer(doc); // Return .docx buffer
 }
 
 const generateReport = async (req, res) => {
-  const { bankId, format } = req.body; // Use req.body instead of req.query
+  const { bankId, format } = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(bankId)) {
+    return res.status(400).send("Invalid bankId format");
+  }
 
   try {
-    const reportBuffer = await pdf_generateReport(bankId, format);
-
-    if (!reportBuffer) {
-      return res.status(400).send("Failed to generate report.");
-    }
+    let reportBuffer;
 
     if (format === "pdf") {
+      reportBuffer = await generatePdfReport(bankId);
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
         "Content-Disposition",
         `attachment; filename=report_${bankId}.pdf`
       );
     } else if (format === "word") {
+      reportBuffer = await generateDocxReport(bankId);
       res.setHeader(
         "Content-Type",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -106,4 +126,35 @@ const generateReport = async (req, res) => {
   }
 };
 
-module.exports = { generateReport };
+async function generateDocx() {
+  // Create a new document
+  const doc = new Document({
+    sections: [
+      {
+        properties: {},
+        children: [
+          new Paragraph({
+            children: [
+              new TextRun("Hello world!"),
+              new TextRun({
+                text: " This is bold text.",
+                bold: true,
+              }),
+              new TextRun({
+                text: " And this is underlined.",
+                underline: {},
+              }),
+            ],
+          }),
+        ],
+      },
+    ],
+  });
+
+  // Generate the file
+  const buffer = await Packer.toBuffer(doc);
+  fs.writeFileSync("sample.docx", buffer);
+  console.log("✅ DOCX file created as 'sample.docx'");
+}
+
+module.exports = { generatePdfReport, generateDocxReport, generateReport };

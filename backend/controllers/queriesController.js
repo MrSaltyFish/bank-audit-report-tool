@@ -1,5 +1,6 @@
 const Observations = require("../models/Observations.model");
 const MasterDatabase = require("../models/MasterDatabase.model");
+const logger = require("../utils/logger");
 
 const addQuery = async (req, res) => {
   const { accountNo, query, details, masterDatabase } = req.body;
@@ -12,7 +13,7 @@ const addQuery = async (req, res) => {
       masterDatabase,
     });
     await newQuery.save();
-    res.json({message: "Query added successfully" });
+    res.json({ message: "Query added successfully" });
   } catch (err) {
     console.error("Error adding query:", err);
     res.status(500).json({

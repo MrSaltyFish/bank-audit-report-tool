@@ -3,8 +3,7 @@ const jwtToken = localStorage.getItem("jwtToken");
 
 import "./auth.js";
 
-document.addEventListener("DOMContentLoaded", async () => {
-  await checkAuth();
+document.addEventListener("DOMContentLoaded", () => {
   fetchBanks();
 
   document
@@ -16,7 +15,7 @@ document.getElementById("logoutBtn").addEventListener("click", async () => {
   try {
     const res = await fetch(`${SERVER_URL}/auth/logout`, {
       method: "POST",
-      credentials: "include", // important if you're using cookies/session
+      credentials: "include",
     });
 
     if (!res.ok) throw new Error("Logout failed");

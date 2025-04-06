@@ -1,4 +1,5 @@
 const Bank = require("../models/Bank.model");
+const logger = require("../utils/logger");
 
 // const addBank = async (req, res) => {
 //   const { bankName, branchName, branchLocation } = req.body;
@@ -16,6 +17,10 @@ const addBank = async (req, res) => {
   const { bankName, branchName, branchLocation } = req.body;
 
   if (!bankName || !branchName || !branchLocation) {
+    logger.error(
+      `Incomplete incoming parameters - bankName: ${bankName}, branchName: ${branchName}, branchLocation: ${branchLocation}`
+    );
+
     return res
       .status(400)
       .send("Bank Name, Branch Name, and Branch Location are required");
@@ -24,6 +29,9 @@ const addBank = async (req, res) => {
   try {
     const newBank = new Bank({ bankName, branchName, branchLocation });
     await newBank.save();
+    logger.info(
+      `Bank: ${bankName}, Branch ${branchName}, and Location ${branchLocation}, are added successfully.`
+    );
     res.status(201).json({ message: "Bank and Branch added successfully" });
   } catch (err) {
     console.error("Error adding bank or branch:", err);
@@ -35,6 +43,7 @@ const getBank = async (req, res) => {
   const { bankId } = req.body;
 
   if (!bankId) {
+    logger.error(`Missing - bankId: ${bankId}.`);
     return res.status(400).json({
       success: false,
       message: "Bank ID is required",
