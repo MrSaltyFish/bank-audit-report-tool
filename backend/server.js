@@ -8,6 +8,7 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");
 const fs = require("fs");
+const logger = require("./utils/logger");
 
 const connectDB = require("./config/db");
 

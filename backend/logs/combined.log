@@ -61,3 +61,23 @@
 {"level":"info","message":"User asd@asd is authenticated","timestamp":"2025-04-06 18:21:01"}
 {"level":"info","message":"User asd@asd is authenticated","timestamp":"2025-04-06 18:21:02"}
 {"level":"info","message":"User asd@asd is authenticated","timestamp":"2025-04-06 19:48:22"}
+{"level":"info","message":"Login request from IP ::1 for email: asd@asd","timestamp":"2025-04-06 20:56:14"}
+{"level":"info","message":"Login successful from IP ::1 for user: asd@asd","timestamp":"2025-04-06 20:56:14"}
+{"level":"info","message":"Incoming request to /get-banks from IP: ::1","timestamp":"2025-04-06 20:56:15"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 20:56:15"}
+{"level":"info","message":"Total banks returned: 2 — Request IP: ::1","timestamp":"2025-04-06 20:56:15"}
+{"level":"info","message":"Incoming request to /add-bank from IP: ::1","timestamp":"2025-04-06 20:56:40"}
+{"level":"info","message":"New bank added from IP: ::1 — this is a bank, this is a branch, in somewhere","timestamp":"2025-04-06 20:56:40"}
+{"level":"info","message":"Incoming request to /get-banks from IP: ::1","timestamp":"2025-04-06 20:56:40"}
+{"level":"info","message":"Total banks returned: 3 — Request IP: ::1","timestamp":"2025-04-06 20:56:41"}
+{"level":"info","message":"Request to delete bank with ID 67f2576234390e2f73d3d43f from IP: ::1","timestamp":"2025-04-06 20:56:43"}
+{"level":"info","message":"Bank with ID 67f2576234390e2f73d3d43f deleted by IP: ::1","timestamp":"2025-04-06 20:56:43"}
+{"level":"info","message":"Incoming request to /get-banks from IP: ::1","timestamp":"2025-04-06 20:56:44"}
+{"level":"info","message":"Total banks returned: 2 — Request IP: ::1","timestamp":"2025-04-06 20:56:44"}
+{"level":"info","message":"Request to delete bank with ID 67f2530b30ec874acdbf8190 from IP: ::1","timestamp":"2025-04-06 20:56:46"}
+{"level":"info","message":"Bank with ID 67f2530b30ec874acdbf8190 deleted by IP: ::1","timestamp":"2025-04-06 20:56:46"}
+{"level":"info","message":"Incoming request to /get-banks from IP: ::1","timestamp":"2025-04-06 20:56:47"}
+{"level":"info","message":"Total banks returned: 1 — Request IP: ::1","timestamp":"2025-04-06 20:56:47"}
+{"level":"info","message":"Logout request from IP ::1","timestamp":"2025-04-06 20:56:55"}
+{"level":"info","message":"Login request from IP ::1 for email: asdfg@aswdf","timestamp":"2025-04-06 20:58:18"}
+{"level":"warn","message":"Login failed from IP ::1 - email not found: asdfg@aswdf","timestamp":"2025-04-06 20:58:18"}
