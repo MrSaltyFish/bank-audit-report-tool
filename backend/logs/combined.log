@@ -81,3 +81,75 @@
 {"level":"info","message":"Logout request from IP ::1","timestamp":"2025-04-06 20:56:55"}
 {"level":"info","message":"Login request from IP ::1 for email: asdfg@aswdf","timestamp":"2025-04-06 20:58:18"}
 {"level":"warn","message":"Login failed from IP ::1 - email not found: asdfg@aswdf","timestamp":"2025-04-06 20:58:18"}
+{"level":"info","message":"Login request from IP ::1 for email: asdfg@aswdf","timestamp":"2025-04-06 21:01:37"}
+{"level":"warn","message":"Login failed from IP ::1 - email not found: asdfg@aswdf","timestamp":"2025-04-06 21:01:37"}
+{"level":"info","message":"Login request from IP ::1 for email: asd@asd","timestamp":"2025-04-06 21:01:46"}
+{"level":"info","message":"Login successful from IP ::1 for user: asd@asd","timestamp":"2025-04-06 21:01:46"}
+{"level":"info","message":"Incoming request to /get-banks from IP: ::1","timestamp":"2025-04-06 21:01:46"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:01:46"}
+{"level":"info","message":"Total banks returned: 1 — Request IP: ::1","timestamp":"2025-04-06 21:01:46"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:01:59"}
+{"level":"info","message":"Incoming request to /get-bank from IP: ::1","timestamp":"2025-04-06 21:01:59"}
+{"level":"info","message":"Bank retrieved for ID 67f29d30fb2f894d76970a89 from IP: ::1","timestamp":"2025-04-06 21:01:59"}
+{"level":"info","message":"Incoming request to /get-banks from IP: ::1","timestamp":"2025-04-06 21:02:05"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:02:05"}
+{"level":"info","message":"Total banks returned: 1 — Request IP: ::1","timestamp":"2025-04-06 21:02:05"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:02:07"}
+{"level":"info","message":"Incoming request to /get-bank from IP: ::1","timestamp":"2025-04-06 21:02:07"}
+{"level":"info","message":"Bank retrieved for ID 67f29d30fb2f894d76970a89 from IP: ::1","timestamp":"2025-04-06 21:02:07"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:02:08"}
+{"level":"info","message":"Incoming request to /get-banks from IP: ::1","timestamp":"2025-04-06 21:02:08"}
+{"level":"info","message":"Total banks returned: 1 — Request IP: ::1","timestamp":"2025-04-06 21:02:08"}
+{"level":"info","message":"Received report generation request from IP ::1 for bankId: 67f29d30fb2f894d76970a89, format: word","timestamp":"2025-04-06 21:02:14"}
+{"level":"info","message":"Generating WORD report for bankId: 67f29d30fb2f894d76970a89","timestamp":"2025-04-06 21:02:14"}
+{"level":"info","message":"Successfully generated and sent WORD report for bankId: 67f29d30fb2f894d76970a89","timestamp":"2025-04-06 21:02:14"}
+{"level":"info","message":"Incoming request to /get-banks from IP: ::1","timestamp":"2025-04-06 21:02:20"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:02:20"}
+{"level":"info","message":"Total banks returned: 1 — Request IP: ::1","timestamp":"2025-04-06 21:02:20"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:02:22"}
+{"level":"info","message":"Incoming request to /get-bank from IP: ::1","timestamp":"2025-04-06 21:02:22"}
+{"level":"info","message":"Bank retrieved for ID 67f29d30fb2f894d76970a89 from IP: ::1","timestamp":"2025-04-06 21:02:22"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:02:35"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:02:45"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:02:47"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:02:51"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:02:55"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:03:34"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:03:59"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:04:02"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:04:04"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:04:19"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:05:51"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:05:53"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:05:55"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:07:18"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:07:22"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:09:44"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:09:47"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:09:52"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:09:57"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:09:59"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:10:11"}
+{"level":"info","message":"Incoming request to /get-banks from IP: ::1","timestamp":"2025-04-06 21:12:35"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:12:35"}
+{"level":"info","message":"Total banks returned: 1 — Request IP: ::1","timestamp":"2025-04-06 21:12:35"}
+{"level":"info","message":"Incoming request to /get-bank from IP: ::1","timestamp":"2025-04-06 21:12:40"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:12:40"}
+{"level":"info","message":"Bank retrieved for ID 67f29d30fb2f894d76970a89 from IP: ::1","timestamp":"2025-04-06 21:12:40"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:12:48"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:13:38"}
+{"level":"info","message":"Authenticated user asd@asd from IP ::1","timestamp":"2025-04-06 21:13:45"}
+{"level":"info","message":"Incoming request to /get-details for accountNo: 1 from IP: ::1","timestamp":"2025-04-06 21:20:12"}
+{"level":"info","message":"Fetched 1 observation(s) for accountNo: 1 from IP: ::1","timestamp":"2025-04-06 21:20:12"}
+{"level":"info","message":"Incoming request to /get-details for accountNo: 1 from IP: ::1","timestamp":"2025-04-06 21:21:25"}
+{"level":"info","message":"Fetched 1 observation(s) for accountNo: 1 from IP: ::1","timestamp":"2025-04-06 21:21:25"}
+{"level":"info","message":"Incoming request to /add-query for accountNo: 123 from IP: ::1","timestamp":"2025-04-06 21:21:35"}
+{"level":"warn","message":"Missing required fields in addQuery from IP: ::1 — accountNo: 123, query: idk, masterDatabase: undefined","timestamp":"2025-04-06 21:21:35"}
+{"level":"info","message":"Incoming request to /add-query for accountNo: 1 from IP: ::1","timestamp":"2025-04-06 21:21:40"}
+{"level":"warn","message":"Missing required fields in addQuery from IP: ::1 — accountNo: 1, query: idk, masterDatabase: undefined","timestamp":"2025-04-06 21:21:40"}
+{"level":"info","message":"Incoming request to /add-query for accountNo: 1234 from IP: ::1","timestamp":"2025-04-06 21:24:21"}
+{"level":"warn","message":"Missing required fields in addQuery from IP: ::1 — accountNo: 1234, query: idk, masterDatabase: undefined","timestamp":"2025-04-06 21:24:21"}
+{"level":"info","message":"Incoming request to /get-banks from IP: ::1","timestamp":"2025-04-06 21:34:11"}
+{"level":"info","message":"Total banks returned: 1 — Request IP: ::1","timestamp":"2025-04-06 21:34:11"}
+{"level":"info","message":"Incoming request to /get-all-details for bankId: 67f29d30fb2f894d76970a89 from IP: ::1","timestamp":"2025-04-06 21:34:26"}
+{"level":"info","message":"Returned 0 master entries for bankId: 67f29d30fb2f894d76970a89 from IP: ::1","timestamp":"2025-04-06 21:34:26"}

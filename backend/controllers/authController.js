@@ -94,7 +94,7 @@ const checkAuth = (req, res) => {
       });
     }
 
-    logger.info(`Authenticated user ${req.user.email} from IP ${req.ip}`);
+    // logger.info(`Authenticated user ${req.user.email} from IP ${req.ip}`);
 
     res.status(200).json({
       success: true,

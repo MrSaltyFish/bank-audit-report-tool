@@ -7,7 +7,6 @@ const path = require("path");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");
-const fs = require("fs");
 const logger = require("./utils/logger");
 
 const connectDB = require("./config/db");
@@ -36,8 +35,7 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-// Security Middleware
-// Apply to all routes
+// Security Middleware, applied to all routes
 app.use(limiter);
 app.use(express.json());
 app.use(cors({ origin: FRONTEND_URI, credentials: true }));
@@ -45,7 +43,7 @@ app.use(cors({ origin: FRONTEND_URI, credentials: true }));
 app.use(helmet());
 app.use(mongoSanitize({ replaceWith: "_" }));
 
-// Middleware
+// Basic Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
@@ -58,6 +56,7 @@ app.use((req, res, next) => {
   next();
 });
 
+// Database Connection
 connectDB();
 
 // Home Route

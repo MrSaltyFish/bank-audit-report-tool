@@ -2,6 +2,8 @@ const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 import "./auth.js";
 
+console.log("Script loaded");
+
 // Function to get URL parameters
 function getUrlParameter(name) {
   const urlParams = new URLSearchParams(window.location.search);
@@ -128,7 +130,7 @@ document
   .getElementById("getDetailsForm")
   .addEventListener("submit", async (e) => {
     e.preventDefault();
-
+    console.log("Form submitted");
     const accountNo = document.getElementById("accountNoToFetch").value;
 
     try {
@@ -144,14 +146,25 @@ document
 
       // Display the result
       const outputDiv = document.getElementById("detailsOutput");
-      outputDiv.innerHTML = `
-  <h4>Account Details</h4>
-  ${
-    data.length === 0
-      ? "<p>No details found for this account.</p>"
-      : `<pre>${JSON.stringify(data, null, 2)}</pre>`
-  }
-`;
+      outputDiv.innerHTML = "<h4>Account Details</h4>";
+
+      if (data.length === 0) {
+        outputDiv.innerHTML += "<p>No details found for this account.</p>";
+      } else {
+        data.forEach((item) => {
+          const card = document.createElement("div");
+          card.className = "card p-3 mb-3 shadow-sm";
+          card.innerHTML = `
+      <div class="card-body">
+        <h5 class="card-title">Account No: ${item.accountNo}</h5>
+        <p class="card-text"><strong>Query:</strong> ${item.query}</p>
+        <p class="card-text"><strong>Details:</strong> ${item.details}</p>
+        <p class="card-text text-muted"><small>ID: ${item._id}</small></p>
+      </div>
+    `;
+          outputDiv.appendChild(card);
+        });
+      }
     } catch (err) {
       console.error("Error fetching details:", err);
       alert("Error fetching account details.");
