@@ -8,29 +8,53 @@ function getUrlParameter(name) {
   return urlParams.get(name);
 }
 
-// Autofill the Bank ID from the URL
-document.addEventListener("DOMContentLoaded", () => {
+let storedBankID = null;
 
-  const bankID = getUrlParameter("bankId"); // Adjust this parameter name if needed
+document.addEventListener("DOMContentLoaded", async () => {
+  const bankID = getUrlParameter("bankId");
+  storedBankID = bankID; // Store for later use in payload
   console.log("Bank ID is " + bankID);
+
   if (bankID) {
-    document.getElementById("bankID").value = bankID;
+    try {
+      const res = await fetch(`${SERVER_URL}/bank/get-bank`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ bankId: bankID }),
+      });
+
+      if (!res.ok) throw new Error("Failed to fetch bank name");
+
+      const data = await res.json();
+      const bankName = data.bankName || "Unknown Bank";
+
+      document.getElementById(
+        "bankNameHeading"
+      ).innerHTML = `Create Entry - <strong>${bankName}</strong>`;
+    } catch (err) {
+      console.error("Error fetching bank name:", err);
+      document.getElementById(
+        "bankNameHeading"
+      ).innerHTML = `Create Entry - <strong>Bank ID: ${bankID}</strong>`;
+    }
   }
 
-  // Attach event listener for generating report
-  const generateReportLink = document.querySelector(
-    'a[href="#generate-report"]'
-  );
-  if (generateReportLink) {
-    generateReportLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      const selectedBankID = document.getElementById("bankID").value;
-      if (!selectedBankID) {
-        alert("Please select a bank to generate the report.");
-        return;
-      }
-      generateReport(selectedBankID);
+  // Event listener for report generation stays here...
+});
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  try {
+    const res = await fetch(`${SERVER_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include", // important if you're using cookies/session
     });
+
+    if (!res.ok) throw new Error("Logout failed");
+    localStorage.removeItem("jwtToken");
+    window.location.href = "login.html";
+  } catch (err) {
+    console.error("Logout error:", err);
+    alert("Error logging out. Try again.");
   }
 });
 
@@ -42,9 +66,14 @@ document.getElementById("addDataForm").addEventListener("submit", async (e) => {
     bankID: document.getElementById("bankID").value,
     accountNo: document.getElementById("accountNo").value,
     nameOfBorrower: document.getElementById("nameOfBorrower").value,
-    dateOfSanctionRenewal: document.getElementById("dateOfSanctionRenewal").value,
-    sanctionedAmount: parseFloat(document.getElementById("sanctionedAmount").value),
-    outstandingBalance: parseFloat(document.getElementById("outstandingBalance").value),
+    dateOfSanctionRenewal: document.getElementById("dateOfSanctionRenewal")
+      .value,
+    sanctionedAmount: parseFloat(
+      document.getElementById("sanctionedAmount").value
+    ),
+    outstandingBalance: parseFloat(
+      document.getElementById("outstandingBalance").value
+    ),
     otherFacilities: document.getElementById("otherFacilities").value,
   };
 
@@ -66,53 +95,56 @@ document.getElementById("addDataForm").addEventListener("submit", async (e) => {
 });
 
 // Add QUery
-document.getElementById("addQueryForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+document
+  .getElementById("addQueryForm")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const payload = {
-    accountNo: document.getElementById("accountNoObservation").value,
-    query: document.getElementById("query").value,
-    details: document.getElementById("details").value,
-  };
+    const payload = {
+      accountNo: document.getElementById("accountNoObservation").value,
+      query: document.getElementById("query").value,
+      details: document.getElementById("details").value,
+    };
 
-  try {
-    const res = await fetch(`${SERVER_URL}/query/add-query`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const res = await fetch(`${SERVER_URL}/query/add-query`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    if (!res.ok) throw new Error("Failed to add query: " + res.message);
+      if (!res.ok) throw new Error("Failed to add query: " + res.message);
 
-    alert("Query added successfully!");
-    e.target.reset();
-  } catch (err) {
-    console.error("Error adding query:", err);
-    alert("Error adding query: " + err);
-  }
-});
-
+      alert("Query added successfully!");
+      e.target.reset();
+    } catch (err) {
+      console.error("Error adding query:", err);
+      alert("Error adding query: " + err);
+    }
+  });
 
 // get-details
-document.getElementById("getDetailsForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+document
+  .getElementById("getDetailsForm")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const accountNo = document.getElementById("accountNoToFetch").value;
+    const accountNo = document.getElementById("accountNoToFetch").value;
 
-  try {
-    const res = await fetch(`${SERVER_URL}/master/get-details`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ accountNo }),
-    });
+    try {
+      const res = await fetch(`${SERVER_URL}/master/get-details`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accountNo }),
+      });
 
-    if (!res.ok) throw new Error("Failed to fetch details");
+      if (!res.ok) throw new Error("Failed to fetch details");
 
-    const data = await res.json();
+      const data = await res.json();
 
-    // Display the result
-    const outputDiv = document.getElementById("detailsOutput");
-    outputDiv.innerHTML = `
+      // Display the result
+      const outputDiv = document.getElementById("detailsOutput");
+      outputDiv.innerHTML = `
   <h4>Account Details</h4>
   ${
     data.length === 0
@@ -120,14 +152,11 @@ document.getElementById("getDetailsForm").addEventListener("submit", async (e) =
       : `<pre>${JSON.stringify(data, null, 2)}</pre>`
   }
 `;
-
-  } catch (err) {
-    console.error("Error fetching details:", err);
-    alert("Error fetching account details.");
-  }
-});
-
-
+    } catch (err) {
+      console.error("Error fetching details:", err);
+      alert("Error fetching account details.");
+    }
+  });
 
 // Function to generate a report
 async function generateReport(bankId) {

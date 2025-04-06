@@ -3,7 +3,8 @@ const jwtToken = localStorage.getItem("jwtToken");
 
 import "./auth.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await checkAuth();
   fetchBanks();
 
   document
@@ -11,6 +12,22 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("submit", handleBankFormSubmit);
 });
 
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  try {
+    const res = await fetch(`${SERVER_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include", // important if you're using cookies/session
+    });
+
+    if (!res.ok) throw new Error("Logout failed");
+
+    localStorage.removeItem("jwtToken");
+    window.location.href = "login.html";
+  } catch (err) {
+    console.error("Logout error:", err);
+    alert("Error logging out. Try again.");
+  }
+});
 
 async function handleBankFormSubmit(e) {
   e.preventDefault();

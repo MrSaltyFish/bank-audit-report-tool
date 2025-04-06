@@ -48,7 +48,7 @@ const login = async (req, res) => {
     );
 
     // 🔹 Store token in HTTP-Only Cookie (More Secure)
-    res.cookie("token", token, {
+    res.cookie("jwtToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
@@ -63,19 +63,21 @@ const login = async (req, res) => {
 };
 
 const logout = (req, res) => {
-  res.clearCookie("token");
-  localStorage.removeItem("authToken");
+  res.clearCookie("jwtToken");
   res.json({ success: true, message: "Logged out successfully" });
 };
 
 const checkAuth = (req, res) => {
   try {
     if (!req.user) {
+      console.log(`${req.user._id}: not authenticated`);
       return res.status(401).json({
         success: false,
-        message: "Unauthorized: User not authenticated",
+        message: "Unauthorized: User NOT authenticated",
       });
     }
+
+    console.log(`${req.user._id}: yes authenticated`);
 
     res.status(200).json({
       success: true,
@@ -85,7 +87,6 @@ const checkAuth = (req, res) => {
         name: req.user.name,
         email: req.user.email,
         role: req.user.role,
-        // Add more fields as needed, but avoid sending sensitive data like password
       },
     });
   } catch (error) {

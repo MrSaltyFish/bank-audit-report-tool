@@ -31,6 +31,36 @@ const addBank = async (req, res) => {
   }
 };
 
+const getBank = async (req, res) => {
+  const { bankId } = req.body;
+
+  if (!bankId) {
+    return res.status(400).json({
+      success: false,
+      message: "Bank ID is required",
+    });
+  }
+
+  try {
+    const bank = await Bank.findById(bankId);
+
+    if (!bank) {
+      return res.status(404).json({
+        success: false,
+        message: "Bank not found",
+      });
+    }
+
+    res.json(bank);
+  } catch (err) {
+    console.error("Error fetching bank:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error: Failed to fetch bank",
+    });
+  }
+};
+
 const getBanks = async (req, res) => {
   try {
     const banks = await Bank.find();
@@ -55,4 +85,4 @@ const deleteBank = async (req, res) => {
   }
 };
 
-module.exports = { addBank, getBanks, deleteBank };
+module.exports = { addBank, getBank, getBanks, deleteBank };
