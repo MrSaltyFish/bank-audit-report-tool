@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcryptjs");
 const path = require("path");
 const helmet = require("helmet");
-const expressMongoSanitize = require("express-mongo-sanitize");
+const mongoSanitize = require("express-mongo-sanitize");
 
 const connectDB = require("./config/db");
 
@@ -23,8 +23,9 @@ console.log(`\nFRONTEND_URI: ${FRONTEND_URI}\nPORT: ${PORT}\n`);
 
 // Security Middleware
 app.use(cors({ origin: FRONTEND_URI, credentials: true }));
+
 app.use(helmet());
-app.use(expressMongoSanitize({ replaceWith: "_" }));
+app.use(mongoSanitize({ replaceWith: "_" }));
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));

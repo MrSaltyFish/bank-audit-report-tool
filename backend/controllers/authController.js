@@ -27,10 +27,9 @@ const signup = async (req, res) => {
 };
 
 const testUser = (req, res) => {
-  console.log("Sanitized Body:", req.body);
+  console.log("Request Body After Sanitization:", req.body);
   res.status(200).json({
     success: true,
-    message: "User data received and sanitized",
     sanitizedData: req.body,
   });
 };
