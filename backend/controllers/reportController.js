@@ -17,10 +17,16 @@ async function generatePdfReport(bankId) {
   const bankData = await Bank.findById(bankId);
   if (!bankData) throw new Error("Bank not found");
 
+  logger.debug(`Fetched bank data: ${bankData.bankName} (${bankData._id})`);
+
   const masterData = await MasterDatabase.find({ bank: bankId });
   const observationData = await Observations.find({
     accountNo: { $in: masterData.map((entry) => entry.accountNo) },
   });
+
+  logger.debug(
+    `Fetched ${masterData.length} master entries and ${observationData.length} observations for report.`
+  );
 
   const pdfDoc = await PDFDocument.create();
   const page = pdfDoc.addPage();
@@ -91,13 +97,20 @@ async function generateDocxReport(bankId) {
 const generateReport = async (req, res) => {
   const { bankId, format } = req.body;
 
+  logger.info(
+    `Received report generation request from IP ${req.ip} for bankId: ${bankId}, format: ${format}`
+  );
+
   if (!mongoose.Types.ObjectId.isValid(bankId)) {
+    logger.warn(`Invalid bankId format received: ${bankId} from IP ${req.ip}`);
     return res.status(400).send("Invalid bankId format");
   }
 
   try {
     let reportBuffer;
-
+    logger.info(
+      `Generating ${format.toUpperCase()} report for bankId: ${bankId}`
+    );
     if (format === "pdf") {
       reportBuffer = await generatePdfReport(bankId);
       res.setHeader("Content-Type", "application/pdf");
@@ -120,7 +133,14 @@ const generateReport = async (req, res) => {
     }
 
     res.send(reportBuffer);
+    logger.info(
+      `Successfully generated and sent ${format.toUpperCase()} report for bankId: ${bankId}`
+    );
   } catch (error) {
+    logger.error(
+      `Error generating report for bankId: ${bankId} from IP ${req.ip}:`,
+      error
+    );
     console.error("Error generating report:", error);
     res.status(500).send("Error generating report");
   }
@@ -154,6 +174,7 @@ async function generateDocx() {
   // Generate the file
   const buffer = await Packer.toBuffer(doc);
   fs.writeFileSync("sample.docx", buffer);
+  logger.info("Sample DOCX file generated as 'sample.docx'");
   console.log("✅ DOCX file created as 'sample.docx'");
 }
 

@@ -13,16 +13,26 @@ const createEntry = async (req, res) => {
     otherFacilities,
   } = req.body;
 
+  logger.info(`Incoming request to /create-entry from IP: ${req.ip}`);
+
   if (!bankID) {
-    return res.status(400).send("Bank ID is required");
+    logger.warn(`Missing bankID in createEntry request from IP: ${req.ip}`);
+    return res
+      .status(400)
+      .json({ success: false, message: "Bank ID is required" });
   }
 
   try {
     const existingEntry = await MasterDatabase.findOne({ accountNo });
+
     if (existingEntry) {
-      return res
-        .status(409)
-        .send("Entry already exists with this account number");
+      logger.warn(
+        `Duplicate entry attempt for accountNo: ${accountNo} from IP: ${req.ip}`
+      );
+      return res.status(409).json({
+        success: false,
+        message: "Entry already exists with this account number",
+      });
     }
 
     const newEntry = new MasterDatabase({
@@ -34,34 +44,57 @@ const createEntry = async (req, res) => {
       outstandingBalance,
       otherFacilities,
     });
+
     await newEntry.save();
-    res.json({ message: "Entry created successfully" });
+
+    logger.info(
+      `New master entry created for accountNo: ${accountNo} under bankID: ${bankID} by IP: ${req.ip}`
+    );
+
+    res.json({ success: true, message: "Entry created successfully" });
   } catch (err) {
-    console.error("Error creating entry in MasterDatabase:", err);
-    res.status(500).send("Failed to create entry");
+    logger.error("Error creating entry in MasterDatabase: %o", err);
+    res.status(500).json({ success: false, message: "Failed to create entry" });
   }
 };
 
 const getDetails = async (req, res) => {
   const { accountNo } = req.body;
-  console.log("Received accountNo:", accountNo);
+
+  logger.info(
+    `Incoming request to /get-details for accountNo: ${accountNo} from IP: ${req.ip}`
+  );
 
   try {
-    const observations = await Observations.find({
-      accountNo: accountNo,
-    }).populate("accountNo");
+    const observations = await Observations.find({ accountNo }).populate(
+      "accountNo"
+    );
+
+    logger.info(
+      `Fetched ${observations.length} observation(s) for accountNo: ${accountNo} from IP: ${req.ip}`
+    );
+
     res.json(observations);
   } catch (err) {
-    console.error("Error fetching details:", err);
-    res.status(500).send("Failed to fetch details");
+    logger.error("Error fetching details for accountNo %s: %o", accountNo, err);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to fetch details" });
   }
 };
 
 const getAllDetails = async (req, res) => {
   const { bankId } = req.query;
 
+  logger.info(
+    `Incoming request to /get-all-details for bankId: ${bankId} from IP: ${req.ip}`
+  );
+
   if (!bankId) {
-    return res.status(400).json({ error: "Bank ID is required" });
+    logger.warn(`Missing bankId in getAllDetails request from IP: ${req.ip}`);
+    return res
+      .status(400)
+      .json({ success: false, message: "Bank ID is required" });
   }
 
   try {
@@ -70,10 +103,14 @@ const getAllDetails = async (req, res) => {
       "bankName branchName branchLocation"
     );
 
+    logger.info(
+      `Returned ${entries.length} master entries for bankId: ${bankId} from IP: ${req.ip}`
+    );
+
     res.json(entries);
   } catch (error) {
-    console.error("Error fetching bank data for bank ID:", bankId, error);
-    res.status(500).json({ error: "Internal Server Error" });
+    logger.error("Error fetching entries for bankId %s: %o", bankId, error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
 

@@ -49,6 +49,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
+// Debug Logger
+app.use((req, res, next) => {
+  logger.debug(
+    `Incoming request to ${req.method} ${req.originalUrl} from IP ${req.ip}`
+  );
+  next();
+});
+
 connectDB();
 
 // Home Route
