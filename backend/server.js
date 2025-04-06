@@ -22,6 +22,7 @@ const FRONTEND_URI = `${process.env.FRONTEND_URI}` || "http://localhost:5173";
 console.log(`\nFRONTEND_URI: ${FRONTEND_URI}\nPORT: ${PORT}\n`);
 
 // Security Middleware
+app.use(express.json());
 app.use(cors({ origin: FRONTEND_URI, credentials: true }));
 
 app.use(helmet());
