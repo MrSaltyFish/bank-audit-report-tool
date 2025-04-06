@@ -60,7 +60,6 @@ bank-audit-report-tool/
 
 **Frontend**
 
-- React.js
 - HTML, CSS, JavaScript
 - Bootstrap/Tailwind (optional)
 
@@ -73,8 +72,10 @@ bank-audit-report-tool/
 
 - Helmet.js
 - bcrypt (for password hashing)
+- Winston (logger)
+- CORS (for cross origin)
+- express-rate-limiter (for rate limiting)
 - dotenv for environment secrets
-
 ---
 
 ## 🚀 Getting Started
