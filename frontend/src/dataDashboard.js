@@ -46,7 +46,7 @@ document.getElementById("logoutBtn").addEventListener("click", async () => {
   try {
     const res = await fetch(`${SERVER_URL}/auth/logout`, {
       method: "POST",
-      credentials: "include", // important if you're using cookies/session
+      credentials: "include",
     });
 
     if (!res.ok) throw new Error("Logout failed");
