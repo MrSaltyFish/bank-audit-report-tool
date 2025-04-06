@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
+const logger = require("../utils/logger");
 
 const signup = async (req, res) => {
   const { username, email, password } = req.body;
@@ -70,14 +71,14 @@ const logout = (req, res) => {
 const checkAuth = (req, res) => {
   try {
     if (!req.user) {
-      console.log(`${req.user._id}: not authenticated`);
+      logger.warn(`Unauthenticated request from IP: ${req.ip}`);
       return res.status(401).json({
         success: false,
         message: "Unauthorized: User NOT authenticated",
       });
     }
 
-    console.log(`${req.user._id}: yes authenticated`);
+    logger.info(`User ${req.user.email} is authenticated`);
 
     res.status(200).json({
       success: true,
@@ -90,7 +91,7 @@ const checkAuth = (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Error in checkAuth:", error);
+    logger.error("Error in checkAuth: %o", err);
     res.status(500).json({
       success: false,
       message: "Internal server error while checking authentication",
