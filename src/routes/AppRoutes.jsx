@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/Home";
-import About from "../pages/About";
+import Home from "../pages/HomePage";
+import About from "../pages/AboutPage";
 
-import Login from "../pages/Login";
-import Signup from "../pages/Signup";
+import Login from "../pages/LoginPage";
+import Signup from "../pages/SignupPage";
 
-import Overview from "../pages/Dashboard/Overview";
-import Settings from "../pages/Dashboard/Settings";
-import NotFound from "../pages/NotFound";
+import Overview from "../pages/Dashboard/OverviewPage";
+import Settings from "../pages/Dashboard/SettingsPage";
+import NotFound from "../pages/NotFoundPage";
 
 export default function AppRoutes() {
   return (

@@ -2,8 +2,8 @@ import { NavLink } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav className="bg-black text-white px-6 py-4 flex justify-between items-center font-[Century_Gothic] relative">
-      <h1 className="text-xl font-bold text-red-500">🔥 BrandName</h1>
+    <nav className="bg-black text-white px-6 py-4 flex justify-between items-center font-[Poppins] relative">
+      <h1 className="text-xl font-bold text-red-500">B.A.R.T</h1>
 
       <ul className="flex gap-6 text-sm">
         <li>
