@@ -3,11 +3,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-gray-900 text-white text-center py-6">
-        <h1 className="text-3xl font-bold">Welcome to Bart</h1>
-      </header>
-
       {/* Main */}
       <main className="flex-grow container mx-auto px-4 mt-10 text-center">
         <h2 className="text-2xl font-semibold mb-4">
@@ -34,11 +29,6 @@ export default function Home() {
           </Link>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="text-center py-6 text-gray-500">
-        &copy; 2024 Bart. All rights reserved.
-      </footer>
     </div>
   );
 }

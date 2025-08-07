@@ -59,12 +59,6 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-gray-900 text-white text-center py-6">
-        <h1 className="text-3xl font-bold">Register for Bart</h1>
-      </header>
-
-      {/* Main */}
       <main className="flex-grow flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-semibold text-center mb-6">
@@ -133,11 +127,6 @@ export default function SignupPage() {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="text-center py-6 text-gray-500">
-        &copy; 2024 Bart. All rights reserved.
-      </footer>
     </div>
   );
 }

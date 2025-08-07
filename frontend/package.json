@@ -9,7 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "jsonwebtoken": "^9.0.2",
+=======
+    "@gsap/react": "^2.1.2",
+    "framer-motion": "^12.23.12",
+    "gsap": "^3.13.0",
+>>>>>>> e47815ec15b7697ab3122e1a19b4b56141139709
     "next": "15.4.5",
     "react": "19.1.0",
     "react-dom": "19.1.0"
