@@ -46,12 +46,6 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-gray-900 text-white text-center py-6">
-        <h1 className="text-3xl font-bold">Login Bart</h1>
-      </header>
-
-      {/* Login Form */}
       <main className="flex-grow flex justify-center items-center">
         <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold mb-6 text-center">
@@ -116,11 +110,6 @@ export default function Login() {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="text-center py-6 text-gray-500">
-        &copy; 2024 Bart. All rights reserved.
-      </footer>
     </div>
   );
 }
