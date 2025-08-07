@@ -1,12 +1,12 @@
-import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
-  id: uuid("id").primaryKey(),
-  email: varchar("email", { length: 255 }).notNull().unique(),
-  passwordHash: varchar("password", { length: 255 }).notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-  resetPasswordToken: varchar("resetpasswordtoken", { length: 255 }).default(
-    "NULL",
-  ),
-  resetPasswordTokenExpires: timestamp("resetpasswordtokenexpires"),
+	id: uuid("id").primaryKey(),
+	email: text("email").notNull().unique(),
+	passwordHash: text("password_hash").notNull(),
+	createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+	resetPasswordToken: text("reset_password_token").notNull().default(""),
+	resetPasswordTokenExpires: timestamp("reset_password_token_expires", {
+		withTimezone: true,
+	}),
 });
