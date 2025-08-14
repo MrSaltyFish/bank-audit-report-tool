@@ -25,16 +25,14 @@ export default function Login() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ email, password }),
-        }
+        },
       );
 
       const data = await response.json();
 
       if (!response.ok) throw new Error(data.message || "Login failed");
 
-      if (data.success && data.token) {
-        localStorage.setItem("jwtToken", data.token);
-        localStorage.setItem("isAuthenticated", "true");
+      if (data.success) {
         router.push("/dashboard");
       } else {
         throw new Error("Invalid server response");
@@ -46,17 +44,14 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-grow flex justify-center items-center">
+      <main className="flex-grow flex justify-center items-center text-black">
         <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold mb-6 text-center">
+          <h2 className="text-2xl font-semibold mb-6 text-center ">
             Login to Bart
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label
-                htmlFor="email"
-                className="block font-medium text-gray-700"
-              >
+              <label htmlFor="email" className="block font-medium">
                 Email address
               </label>
               <input
@@ -69,10 +64,7 @@ export default function Login() {
               />
             </div>
             <div>
-              <label
-                htmlFor="password"
-                className="block font-medium text-gray-700"
-              >
+              <label htmlFor="password" className="block font-medium">
                 Password
               </label>
               <input

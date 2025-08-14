@@ -18,12 +18,12 @@ export default function SignupPage() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/signup`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username, email, password }),
-        }
+        },
       );
 
       const data = await response.json();
@@ -31,7 +31,7 @@ export default function SignupPage() {
       if (response.status === 201) {
         setMessage({
           type: "success",
-          text: "Signup successful! Redirecting to login...",
+          text: "Register successful! Redirecting to login...",
         });
         setTimeout(() => {
           router.push("/auth/login");
@@ -39,11 +39,11 @@ export default function SignupPage() {
       } else {
         setMessage({
           type: "warning",
-          text: data.message || "Signup failed. Please try again.",
+          text: data.message || "Register failed. Please try again.",
         });
       }
     } catch (error) {
-      console.error("Signup Error:", error);
+      console.error("Register Error:", error);
       setMessage({
         type: "error",
         text: "Something went wrong. Please try again later.",
@@ -58,13 +58,13 @@ export default function SignupPage() {
   }[message.type];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col text-black">
       <main className="flex-grow flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-semibold text-center mb-6">
             Create an Account
           </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 ">
             <div>
               <label htmlFor="username" className="block font-medium">
                 Username

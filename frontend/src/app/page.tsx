@@ -9,7 +9,7 @@ export default function Home() {
           Welcome to <span className="font-bold">B.A.R.T</span>, the Bank Audit
           Report Tool
         </h2>
-        <p className="text-lg text-gray-700 max-w-xl mx-auto">
+        <p className="text-lg text-gray-400 max-w-xl mx-auto">
           Login or Register to manage and view bank details, make queries, and
           generate reports!
         </p>
