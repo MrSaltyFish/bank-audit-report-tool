@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
-    {"offset": {"line": 18, "column": 0}, "map": {"version":3,"sources":["file:///home/fishy/Data/Development/git-self-projects/bank-audit-report-tool/src/app/user/%5Buser%5D/page.tsx"],"sourcesContent":["import { notFound } from \"next/navigation\";\n\ntype User = {\n\tid: string;\n};\n\nexport default async function UserPage({\n\tparams,\n}: {\n\tparams: { user: string };\n}) {\n\tconst par = await params;\n\tconst userUUID = par.user;\n\tconst res = await fetch(\n\t\t`${process.env.NEXT_PUBLIC_SERVER_URL}/user/${userUUID}`,\n\t\t{\n\t\t\tmethod: \"GET\",\n\t\t\tcredentials: \"include\",\n\t\t\theaders: {\n\t\t\t\t\"Content-Type\": \"application/json\",\n\t\t\t},\n\t\t\tcache: \"no-store\",\n\t\t},\n\t);\n\n\tif (!res.ok) {\n\t\treturn notFound();\n\t}\n\n\tconst user: User = await res.json();\n\n\treturn (\n\t\t<div>\n\t\t\t<h1>User {user.id}</h1>\n\t\t\t{/* render more account details here */}\n\t\t</div>\n\t);\n}\n"],"names":[],"mappings":";;;;AAAA;AAAA;;;AAMe,eAAe,SAAS,EACtC,MAAM,EAGN;IACA,MAAM,MAAM,MAAM;IAClB,MAAM,WAAW,IAAI,IAAI;IACzB,MAAM,MAAM,MAAM,MACjB,6DAAsC,MAAM,EAAE,UAAU,EACxD;QACC,QAAQ;QACR,aAAa;QACb,SAAS;YACR,gBAAgB;QACjB;QACA,OAAO;IACR;IAGD,IAAI,CAAC,IAAI,EAAE,EAAE;QACZ,OAAO,CAAA,GAAA,qLAAA,CAAA,WAAQ,AAAD;IACf;IAEA,MAAM,OAAa,MAAM,IAAI,IAAI;IAEjC,qBACC,8OAAC;kBACA,cAAA,8OAAC;;gBAAG;gBAAM,KAAK,EAAE;;;;;;;;;;;;AAIpB","debugId":null}}]
-}
