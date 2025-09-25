@@ -1,31 +1,52 @@
-type User = {
+import { cookies } from "next/headers";
+import { notFound } from "next/navigation";
+
+type Bank = {
 	id: string;
+	bankName: string;
+	slug: string;
+};
+
+type UserData = {
+	userId: string;
+	banks: Bank[];
 };
 
 export default async function UserPage() {
-	const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/user`, {
-		method: "GET",
-		credentials: "include",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		cache: "no-store",
-	});
+	try {
+		const cookieStore = await cookies(); // ✅ await it
+		const token = cookieStore.get("auth-token")?.value;
+		if (!token) return notFound();
 
-	if (!res.ok) throw new Error("Failed to fetch accounts");
+		const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/user`, {
+			headers: {
+				cookie: `auth-token=${token}`,
+			},
+			cache: "no-store",
+		});
 
-	const users: User[] = await res.json();
+		if (!res.ok) return notFound();
 
-	return (
-		<div>
-			<h1>Accounts</h1>
-			<ul>
-				{users.map((user) => (
-					<li key={user.id}>
-						<a href={`/user/${user.id}`}>{user.id}</a>
-					</li>
-				))}
-			</ul>
-		</div>
-	);
+		const data: UserData = await res.json();
+		console.log(data);
+
+		return (
+			<div className="p-6">
+				<h1 className="text-2xl font-bold mb-4">User Banks</h1>
+
+				{data.banks.length === 0 && <p>No banks found.</p>}
+
+				<ul className="space-y-2">
+					{data.banks.map((bank) => (
+						<li key={bank.id} className="border rounded p-3 shadow bg-white">
+							{bank.bankName} (Slug: {bank.slug})
+						</li>
+					))}
+				</ul>
+			</div>
+		);
+	} catch (err) {
+		console.error("Failed to load user banks:", err);
+		return notFound();
+	}
 }

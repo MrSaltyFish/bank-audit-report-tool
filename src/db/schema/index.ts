@@ -3,3 +3,4 @@ export * from "@db/schema/banks";
 export * from "@db/schema/branches";
 export * from "@db/schema/observations";
 export * from "@db/schema/users";
+export * from "@db/schema/roles";

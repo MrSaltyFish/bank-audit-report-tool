@@ -6,8 +6,13 @@ import { db } from "@db/connectDB";
 import { eq } from "drizzle-orm";
 import { loginSchema } from "@libs/validators/auth.validators";
 import { users } from "@db/schema/users";
+import { roles } from "@db/schema/roles";
+import { userRoles } from "@db/schema";
 
-const JWT_SECRET = process.env.JWT_SECRET ?? "NO STRING";
+if (!process.env.JWT_SECRET) {
+	throw new Error("JWT_SECRET is not set in environment variables");
+}
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function POST(request: NextRequest) {
 	try {
@@ -32,7 +37,7 @@ export async function POST(request: NextRequest) {
 
 		if (!user) {
 			return NextResponse.json(
-				{ error: "User not found. New here? Use Register." },
+				{ error: "User not found. New here? Use Register.", success: false },
 				{ status: 401 },
 			);
 		}
@@ -46,10 +51,24 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
+		const fetchedRoles = await db
+			.select({ name: roles.name })
+			.from(userRoles)
+			.innerJoin(roles, eq(userRoles.roleId, roles.id))
+			.where(eq(userRoles.userId, user.id));
+
+		const roleNames = fetchedRoles.map((r) => r.name); // ["admin", "editor"]
 		const oneWeek = 60 * 60 * 24 * 7;
-		const token = jwt.sign({ id: user.id }, JWT_SECRET, {
-			expiresIn: oneWeek,
-		});
+
+		const token = jwt.sign(
+			{
+				sub: user.id.valueOf(),
+				role: roleNames,
+				email: user.email.valueOf(),
+			},
+			JWT_SECRET,
+			{ expiresIn: oneWeek },
+		);
 
 		const response = NextResponse.json(
 			{ message: "Login successful", success: true },

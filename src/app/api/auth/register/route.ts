@@ -5,76 +5,90 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET;
 
-import { db } from "@/db/connectDB";
+import { db } from "@db/connectDB";
 import { eq } from "drizzle-orm";
 import { registerSchema } from "@libs/validators/auth.validators";
-import { users } from "@/db/schema/users";
+import { users } from "@db/schema/users";
+import { userRoles } from "@db/schema/roles";
+import { roles } from "@db/schema/roles";
 
 export async function POST(request: NextRequest) {
-	const body = await request.json();
-	const parsed = registerSchema.safeParse(body);
+    const body = await request.json();
+    const parsed = registerSchema.safeParse(body);
 
-	if (!parsed.success) {
-		return NextResponse.json({ error: "Invalid input" }, { status: 401 });
-	}
+    if (!parsed.success) {
+        return NextResponse.json({ error: parsed.error }, { status: 400 });
+    }
 
-	const { email, password, username } = parsed.data;
+    const { email, password, username } = parsed.data;
 
-	const existingUser = await db
-		.select()
-		.from(users)
-		.where(eq(users.email, email))
-		.limit(1)
-		.then((res) => res[0]);
+    const existingUser = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1)
+        .then((res) => res[0]);
 
-	if (existingUser) {
-		return NextResponse.json(
-			{ error: "Account already exists. Use login instead." },
-			{ status: 400 },
-		);
-	}
+    if (existingUser) {
+        return NextResponse.json(
+            { error: "Account already exists. Use login instead." },
+            { status: 409 },
+        );
+    }
 
-	const hashedPassword = await bcrypt.hash(password, 10);
-	const verificationToken = randomBytes(32).toString("hex");
-	const verificationTokenExpires = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24 hours
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const verificationToken = randomBytes(32).toString("hex");
+    const verificationTokenExpires = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24 hours
 
-	const result = await db
-		.insert(users)
-		.values({
-			email: email,
-			username: username,
-			passwordHash: hashedPassword,
-			verificationToken,
-			verificationTokenExpires,
-		})
-		.returning({ id: users.id, email: users.email, username: users.username });
+    const result = await db
+        .insert(users)
+        .values({
+            email: email,
+            username: username,
+            passwordHash: hashedPassword,
+            verificationToken,
+            verificationTokenExpires,
+        })
+        .returning({ id: users.id, email: users.email, username: users.username });
 
-	const user = result[0];
+    const user = result[0];
+    const userRole = await db.insert(userRoles).values({
+        userId: user.id,
+        roleId: (await db.select().from(roles).where(eq(roles.name, "user")))[0].id,
+    });
 
-	if (!JWT_SECRET) {
-		throw new Error("JWT_SECRET not defined in env.");
-	}
+    const role = await db
+        .select({ name: roles.name })
+        .from(userRoles)
+        .leftJoin(roles, eq(userRoles.roleId, roles.id))
+        .where(eq(userRoles.userId, user.id));
 
-	const oneWeek = 60 * 60 * 24 * 7;
+    if (!JWT_SECRET) {
+        throw new Error("JWT_SECRET not defined in env.");
+    }
 
-	const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
-		expiresIn: oneWeek,
-	});
+    const oneWeek = 60 * 60 * 24 * 7;
 
-	const response = NextResponse.json(
-		{ message: "Register successful" },
-		{ status: 200 },
-	);
+    const token = jwt.sign(
+        { sub: user.id, email: user.email, roles: role.map((r) => r.name) },
+        JWT_SECRET,
+        { expiresIn: oneWeek },
+    );
 
-	response.cookies.set({
-		name: "auth-token",
-		value: token,
-		httpOnly: true,
-		secure: process.env.NODE_ENV === "production",
-		sameSite: "strict",
-		path: "/",
-		maxAge: oneWeek,
-	});
+    const response = NextResponse.json(
+        { message: "Register successful" },
+        { status: 201 },
+    );
 
-	return response;
+    response.cookies.set({
+        name: "auth-token",
+        value: token,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/",
+        maxAge: oneWeek,
+    });
+
+    return response;
 }
