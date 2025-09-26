@@ -15,7 +15,7 @@ import { users } from "@db/schema/users";
 
 export const accounts = pgTable("accounts", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userid: uuid("user_id")
+  userId: uuid("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
   createdAtBranch: uuid("created_at_branch_id")
@@ -39,5 +39,5 @@ export const accounts = pgTable("accounts", {
   slug: text("slug").notNull().unique(),
 });
 
-export type Account_Select = InferSelectModel<typeof branches>;
-export type Account_Insert = InferInsertModel<typeof branches>;
+export type Account_Select = InferSelectModel<typeof accounts>;
+export type Account_Insert = InferInsertModel<typeof accounts>;

@@ -7,28 +7,27 @@ if (JWT_SECRET === "") {
 }
 
 export function middleware(req: NextRequest) {
-	const token = req.cookies.get("JWToken")?.value;
+  const token = req.cookies.get("auth-token")?.value;
 
-	if (!token) {
-		return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-	}
+  if (!token) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
-	try {
-		const payload = jwt.verify(token, JWT_SECRET!) as { sub: string };
-		// Optionally attach userId to request headers so API routes can read it
-		const requestHeaders = new Headers(req.headers);
-		requestHeaders.set("x-user-id", payload.sub);
+  try {
+    const payload = jwt.verify(token, JWT_SECRET!) as { sub: string };
+    const requestHeaders = new Headers(req.headers);
+    requestHeaders.set("x-user-id", payload.sub);
 
-		return NextResponse.next({
-			request: {
-				headers: requestHeaders,
-			},
-		});
-	} catch {
-		return NextResponse.json({ error: "Invalid token" }, { status: 401 });
-	}
+    return NextResponse.next({
+      request: {
+        headers: requestHeaders,
+      },
+    });
+  } catch {
+    return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+  }
 }
 
 export const config = {
-	matcher: ["/api/protected/:path*"], // apply only to protected routes
+  matcher: ["/api/protected/:path*"], // apply only to protected routes
 };

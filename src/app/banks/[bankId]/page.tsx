@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 
 type Branch = {
   id: string;
@@ -107,7 +108,9 @@ export default function BankPage() {
                   placeholder="New name"
                 />
               ) : (
-                branch.branchName
+                <Link href={`/banks/${bankId}/${branch.id}`}>
+                  {branch.branchName}
+                </Link>
               )}
             </span>
             {renameBranchId === branch.id ? (
