@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@db/connectDB";
-import { branches } from "@db/schema";
+import { banks, branches } from "@db/schema";
 import { eq } from "drizzle-orm";
 import slugify from "slugify";
 
@@ -24,7 +24,16 @@ export async function GET(
       .from(branches)
       .where(eq(branches.bankId, bankId));
 
-    return NextResponse.json({ success: true, bankBranches }, { status: 200 });
+    const bank = await db
+      .select()
+      .from(banks)
+      .where(eq(banks.id, bankId))
+      .then((res) => res[0]);
+
+    return NextResponse.json(
+      { success: true, bankName: bank.bankName, bankBranches },
+      { status: 200 }
+    );
   } catch (err) {
     console.error(err);
     return NextResponse.json(

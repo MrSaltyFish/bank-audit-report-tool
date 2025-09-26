@@ -13,6 +13,7 @@ export default function BankPage() {
   const server = process.env.NEXT_PUBLIC_SERVER_URL;
   if (!server) throw new Error("NEXT_PUBLIC_SERVER_URL is not defined");
 
+  const [bankName, setBankName] = useState("");
   const [branches, setBranches] = useState<Branch[]>([]);
   const [createBranchName, setCreateBranchName] = useState("");
   const [renameBranchId, setRenameBranchId] = useState("");
@@ -26,6 +27,7 @@ export default function BankPage() {
       });
       if (!res.ok) throw new Error("Failed to fetch branches");
       const data = await res.json();
+      setBankName(data.bankName);
       setBranches(data.bankBranches || []);
     } catch (err) {
       console.error(err);
@@ -86,7 +88,7 @@ export default function BankPage() {
 
   return (
     <div className="p-12 bg-[#343434] text-white min-h-screen space-y-12">
-      <h1 className="text-2xl font-bold">Branches: {bankId} </h1>
+      <h1 className="text-2xl font-bold">Branches for bank: {bankName} </h1>
 
       {/* Branches List */}
       <ul className="space-y-2">
