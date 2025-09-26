@@ -9,8 +9,7 @@ import { motion } from "framer-motion";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Login", href: "/auth/login" },
-  { name: "Register", href: "/auth/register" },
-  { name: "Dashboard", href: "/dashboard" },
+  { name: "Banks", href: "/banks" },
 ];
 
 export default function Header() {
