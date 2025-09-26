@@ -38,7 +38,7 @@ export default function Login() {
       if (!response.ok) throw new Error(data.message || "Login failed");
 
       if (data.success) {
-        router.push("/user");
+        router.push("/banks");
       } else {
         throw new Error("Invalid server response");
       }
