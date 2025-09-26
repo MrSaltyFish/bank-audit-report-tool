@@ -39,7 +39,7 @@
         "**/*.ts",
         "**/*.tsx",
         ".next/types/**/*.ts"
-    ],
+, "src/app/data-dashboard/page.tsx.depcrecated"    ],
     "exclude": [
         "node_modules"
     ]

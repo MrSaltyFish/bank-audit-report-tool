@@ -8,7 +8,7 @@ export function decodeAuthToken(token: string): string {
       sub: string;
       role: string[];
       email: string;
-      [key: string]: any;
+      [key: string]: unknown;
     };
     return payload.sub;
   } catch (err) {
