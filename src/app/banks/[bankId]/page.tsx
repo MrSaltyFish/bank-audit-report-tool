@@ -56,7 +56,7 @@ export default function BankPage() {
   // Delete branch
   const handleDelete = async (id: string) => {
     try {
-      await fetch(`${server}/api/branches/${id}`, {
+      await fetch(`${server}/api/banks/${bankId}/branches/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -70,7 +70,7 @@ export default function BankPage() {
   const handleRename = async (id: string) => {
     if (!renameBranchName) return;
     try {
-      await fetch(`${server}/api/branches/${id}`, {
+      await fetch(`${server}/api/banks/${bankId}/branches/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
